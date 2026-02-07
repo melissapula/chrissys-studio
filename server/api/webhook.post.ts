@@ -1,10 +1,25 @@
 import Stripe from 'stripe'
-import { Resend } from 'resend'
+
+async function sendEmail(
+    apiKey: string,
+    from: string,
+    to: string,
+    subject: string,
+    html: string
+) {
+    await $fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+        },
+        body: { from, to, subject, html },
+    })
+}
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const stripe = new Stripe(config.stripeSecretKey)
-    const resend = new Resend(config.resendApiKey)
 
     const rawBody = await readRawBody(event)
     const signature = getHeader(event, 'stripe-signature')
@@ -45,32 +60,36 @@ export default defineEventHandler(async (event) => {
             await sanity.patch(paintingId).set({ sold: true }).commit()
         }
 
+        const from = "Christine's Studio <onboarding@resend.dev>"
+
         if (customerEmail) {
-            await resend.emails.send({
-                from: "Christine's Studio <onboarding@resend.dev>",
-                to: customerEmail,
-                subject: `Purchase Confirmation — Christine's Studio`,
-                html: `
+            await sendEmail(
+                config.resendApiKey,
+                from,
+                customerEmail,
+                `Purchase Confirmation — Christine's Studio`,
+                `
                     <h1>Thank you for your purchase!</h1>
                     <p>You've purchased <strong>${paintingTitle}</strong> for ${amountPaid}.</p>
                     <p>Christine will be in touch soon with shipping details.</p>
                     <p>— Christine's Studio</p>
-                `,
-            })
+                `
+            )
         }
 
         if (config.sellerEmail) {
-            await resend.emails.send({
-                from: "Christine's Studio <onboarding@resend.dev>",
-                to: config.sellerEmail,
-                subject: `New Sale — ${paintingTitle}`,
-                html: `
+            await sendEmail(
+                config.resendApiKey,
+                from,
+                config.sellerEmail,
+                `New Sale — ${paintingTitle}`,
+                `
                     <h1>You made a sale!</h1>
                     <p><strong>${paintingTitle}</strong> was purchased for ${amountPaid}.</p>
                     <p>Customer email: ${customerEmail || 'Not provided'}</p>
                     <p>Painting ID: ${paintingId || 'Unknown'}</p>
-                `,
-            })
+                `
+            )
         }
     }
 
