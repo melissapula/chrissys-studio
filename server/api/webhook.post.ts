@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
             await sanity.patch(paintingId).set({ sold: true }).commit()
         }
 
-        const from = "Christine's Studio <onboarding@resend.dev>"
+        const from = "Four Seasons Studio <hello@fourseasonsstudio.com>"
 
         if (customerEmail) {
             await sendEmail(
