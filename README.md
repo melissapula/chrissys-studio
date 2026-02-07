@@ -1,75 +1,88 @@
-# Nuxt Minimal Starter
+# Four Seasons Studio
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Artist portfolio and e-commerce website for Four Seasons Studio — original fine art paintings by Christine. Built with Nuxt 4 and Vue 3.
 
-## Setup
+**Live site:** [fourseasonsstudio.com](https://fourseasonsstudio.com)
 
-Make sure to install dependencies:
+## Tech Stack
+
+- **Framework:** Nuxt 4 / Vue 3 (Composition API)
+- **CMS:** Sanity (headless, real-time content updates)
+- **Payments:** Stripe Checkout (redirect flow)
+- **Email:** Resend (purchase confirmations, sale notifications, contact form)
+- **Hosting:** Cloudflare Pages
+- **Domain:** Cloudflare Registrar
+
+## Features
+
+- Single-page layout with smooth-scroll navigation
+- Painting gallery with category filtering (landscape, still life, study)
+- Shop section with live pricing and availability
+- Stripe Checkout for purchasing paintings
+- Webhook-driven post-purchase automation:
+  - Marks painting as sold in Sanity
+  - Sends buyer a confirmation email
+  - Sends seller a sale notification email
+- Contact form with inquiry types (general, purchase, commission)
+- Responsive design with a single breakpoint at 768px
+
+## Getting Started
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+The dev server runs at http://localhost:3000.
 
-Build the application for production:
+### Sanity Studio
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+cd studio
+npm install
+npm run dev
 ```
 
-Locally preview production build:
+Sanity Studio runs at http://localhost:3333.
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```
+STRIPE_SECRET_KEY=sk_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+RESEND_API_KEY=re_...
+SELLER_EMAIL=seller@example.com
+SANITY_API_TOKEN=sk...
+```
+
+### Local Webhook Testing
+
+Install the [Stripe CLI](https://stripe.com/docs/stripe-cli), then:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+stripe login
+stripe listen --forward-to localhost:3000/api/webhook
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Use test card `4242 4242 4242 4242` with any future expiry and any CVC.
+
+## Project Structure
+
+```
+app/
+  components/     Vue components (NavBar, Gallery, Shop, etc.)
+  composables/    usePaintings() — fetches from Sanity with mock fallback
+  data/           Mock painting data for local development
+  pages/          index.vue (main page), success.vue (post-purchase)
+  assets/css/     Global styles and CSS custom properties
+server/
+  api/            Server routes (checkout, webhook, contact)
+  utils/          Sanity write client
+studio/           Sanity Studio (separate package)
+```
+
+## Deployment
+
+Pushes to `main` auto-deploy via Cloudflare Pages. Environment variables are configured in the Cloudflare Pages dashboard under Settings > Environment variables.
