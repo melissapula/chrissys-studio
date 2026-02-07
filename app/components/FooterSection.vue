@@ -5,6 +5,15 @@
             © {{ currentYear }} All rights reserved · Original fine art from
             Minnesota
         </p>
+        <p class="footer-credit">
+            Built by Melissa Freundschuh-Pula with Claude Code ·
+            <a
+                href="https://www.linkedin.com/in/melissa-freundschuh-pula-833748172"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn</a
+            >
+        </p>
     </footer>
 </template>
 
@@ -35,5 +44,23 @@ const currentYear = new Date().getFullYear()
     color: var(--color-muted);
     margin: 0;
     letter-spacing: 1px;
+}
+
+.footer-credit {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--color-muted);
+    margin: 24px 0 0;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+}
+
+.footer-credit a {
+    color: var(--color-tan-light);
+    text-decoration: none;
+}
+
+.footer-credit a:hover {
+    text-decoration: underline;
 }
 </style>
