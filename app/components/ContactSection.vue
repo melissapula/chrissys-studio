@@ -67,8 +67,16 @@
                     />
                 </div>
 
-                <button class="submit-btn" @click="handleSubmit">
-                    Send Message
+                <p v-if="error" class="error-message">
+                    Something went wrong. Please try again.
+                </p>
+
+                <button
+                    class="submit-btn"
+                    :disabled="sending"
+                    @click="handleSubmit"
+                >
+                    {{ sending ? 'Sending...' : 'Send Message' }}
                 </button>
             </div>
         </div>
@@ -93,15 +101,35 @@ const inquiryTypes = [
     { value: 'commission', label: 'Custom Commission' },
 ]
 
-function handleSubmit() {
-    submitted.value = true
-    setTimeout(() => {
-        submitted.value = false
+const sending = ref(false)
+const error = ref(false)
+
+async function handleSubmit() {
+    if (!form.name || !form.email || !form.message) return
+
+    sending.value = true
+    error.value = false
+
+    try {
+        await $fetch('/api/contact', {
+            method: 'POST',
+            body: {
+                name: form.name,
+                email: form.email,
+                type: form.type,
+                message: form.message,
+            },
+        })
+        submitted.value = true
         form.name = ''
         form.email = ''
         form.type = 'general'
         form.message = ''
-    }, 3000)
+    } catch {
+        error.value = true
+    } finally {
+        sending.value = false
+    }
 }
 </script>
 
@@ -215,8 +243,21 @@ function handleSubmit() {
     transition: background 0.3s ease;
 }
 
-.submit-btn:hover {
+.submit-btn:hover:not(:disabled) {
     background: var(--color-brown-mid);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error-message {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #b44;
+    margin: 0 0 16px;
+    text-align: center;
 }
 
 .success-message {
