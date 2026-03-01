@@ -6,14 +6,15 @@
             @navigate="handleNavigate"
         />
         <HeroSection @navigate="handleNavigate" />
-        <GallerySection @select="selectedPainting = $event" />
-        <ShopSection @select="selectedPainting = $event" />
+        <GallerySection @select="selectedItem = $event" />
+        <ShopSection @select="selectedItem = $event" />
         <AboutSection />
+        <SupportSection />
         <ContactSection />
         <FooterSection />
-        <PaintingModal
-            :painting="selectedPainting"
-            @close="selectedPainting = null"
+        <GalleryModal
+            :item="selectedItem"
+            @close="selectedItem = null"
         />
     </div>
 </template>
@@ -24,22 +25,27 @@ import NavBar from '../components/NavBar.vue'
 import HeroSection from '../components/HeroSection.vue'
 import GallerySection from '../components/GallerySection.vue'
 import ShopSection from '../components/ShopSection.vue'
-import PaintingModal from '../components/PaintingModal.vue'
+import GalleryModal from '../components/GalleryModal.vue'
 import AboutSection from '~/components/AboutSection.vue'
+import SupportSection from '~/components/SupportSection.vue'
 import ContactSection from '~/components/ContactSection.vue'
 import FooterSection from '~/components/FooterSection.vue'
 
 const activeSection = ref('Gallery')
 const scrolled = ref(false)
-const selectedPainting = ref(null)
+const selectedItem = ref(null)
 
 function handleScroll() {
     scrolled.value = window.scrollY > 60
 }
 
 function handleNavigate(section) {
+    if (section === 'Blog') {
+        navigateTo('/blog')
+        return
+    }
     activeSection.value = section
-    const el = document.getElementById(section.toLowerCase())
+    const el = document.getElementById(section.toLowerCase().replace(/\s+/g, '-'))
     if (el) {
         el.scrollIntoView({ behavior: 'smooth' })
     }

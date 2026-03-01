@@ -1,39 +1,45 @@
 <template>
     <Teleport to="body">
-        <div v-if="painting" class="modal-backdrop" @click="$emit('close')">
+        <div v-if="item" class="modal-backdrop" @click="$emit('close')">
             <div class="modal-content" @click.stop>
-                <div class="modal-image">
-                    <img :src="painting.image" :alt="painting.title" />
+                <div v-if="item.image" class="modal-image">
+                    <img :src="item.image" :alt="item.title" />
+                </div>
+                <div v-else class="modal-text-body">
+                    <div v-if="typeof item.body === 'string'" class="body-plain">
+                        {{ item.body }}
+                    </div>
+                    <SanityContent v-else-if="item.body" :blocks="item.body" />
                 </div>
                 <div class="modal-details">
-                    <h2 class="modal-title">{{ painting.title }}</h2>
-                    <p class="modal-year">{{ painting.year }}</p>
+                    <h2 class="modal-title">{{ item.title }}</h2>
+                    <p v-if="item.year" class="modal-year">{{ item.year }}</p>
                     <div class="gold-line" style="margin: 0 0 32px" />
 
                     <div class="detail-rows">
-                        <div class="detail-row">
+                        <div v-if="item.medium" class="detail-row">
                             <span class="detail-label">Medium</span>
-                            <span class="detail-value">{{
-                                painting.medium
-                            }}</span>
+                            <span class="detail-value">{{ item.medium }}</span>
                         </div>
-                        <div class="detail-row">
+                        <div v-if="item.dimensions" class="detail-row">
                             <span class="detail-label">Dimensions</span>
-                            <span class="detail-value">{{
-                                painting.dimensions
-                            }}</span>
+                            <span class="detail-value">{{ item.dimensions }}</span>
                         </div>
                         <div class="detail-row">
+                            <span class="detail-label">Artist</span>
+                            <span class="detail-value artist-name">{{ item.artist }}</span>
+                        </div>
+                        <div v-if="item.price" class="detail-row">
                             <span class="detail-label">Status</span>
                             <span class="detail-value">{{
-                                painting.sold ? 'Sold' : 'Available'
+                                item.sold ? 'Sold' : 'Available'
                             }}</span>
                         </div>
                     </div>
 
-                    <template v-if="!painting.sold">
+                    <template v-if="item.price && !item.sold">
                         <p class="modal-price">
-                            ${{ painting.price.toLocaleString() }}
+                            ${{ item.price.toLocaleString() }}
                         </p>
                         <button
                             class="purchase-btn"
@@ -43,7 +49,7 @@
                             {{
                                 purchasing
                                     ? 'Redirecting to checkout…'
-                                    : 'Purchase This Painting'
+                                    : 'Purchase This Piece'
                             }}
                         </button>
                         <p class="purchase-note">
@@ -61,7 +67,7 @@
 
 <script setup>
 const props = defineProps({
-    painting: { type: Object, default: null },
+    item: { type: Object, default: null },
 })
 
 defineEmits(['close'])
@@ -69,17 +75,17 @@ defineEmits(['close'])
 const purchasing = ref(false)
 
 async function handlePurchase() {
-    if (!props.painting || purchasing.value) return
+    if (!props.item || purchasing.value) return
     purchasing.value = true
 
     try {
         const { url } = await $fetch('/api/checkout', {
             method: 'POST',
             body: {
-                title: props.painting.title,
-                price: props.painting.price,
-                image: props.painting.image,
-                paintingId: props.painting.id,
+                title: props.item.title,
+                price: props.item.price,
+                image: props.item.image,
+                paintingId: props.item.id,
             },
         })
         if (url) {
@@ -129,6 +135,24 @@ async function handlePurchase() {
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
 }
 
+.modal-text-body {
+    flex: 1.3;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 48px 40px;
+    background: var(--color-cream, #faf8f4);
+    color: var(--color-brown-dark);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.9;
+    white-space: pre-line;
+}
+
+.body-plain {
+    white-space: pre-line;
+}
+
 .modal-details {
     flex: 0.7;
     color: var(--color-text-light);
@@ -176,6 +200,10 @@ async function handlePurchase() {
     font-family: var(--font-body);
     font-size: 14px;
     color: var(--color-text-light);
+}
+
+.detail-value.artist-name {
+    text-transform: capitalize;
 }
 
 .modal-price {
@@ -244,7 +272,8 @@ async function handlePurchase() {
         overflow-y: auto;
     }
 
-    .modal-image {
+    .modal-image,
+    .modal-text-body {
         flex: none;
         width: 100%;
     }

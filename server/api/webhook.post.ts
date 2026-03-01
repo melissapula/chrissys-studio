@@ -48,6 +48,11 @@ export default defineEventHandler(async (event) => {
 
     if (stripeEvent.type === 'checkout.session.completed') {
         const session = stripeEvent.data.object as Stripe.Checkout.Session
+
+        if (session.metadata?.type === 'tip') {
+            return { received: true }
+        }
+
         const paintingId = session.metadata?.paintingId
         const customerEmail = session.customer_details?.email
         const paintingTitle = session.metadata?.paintingTitle || 'a painting'
@@ -67,12 +72,12 @@ export default defineEventHandler(async (event) => {
                 config.resendApiKey,
                 from,
                 customerEmail,
-                `Purchase Confirmation — Christine's Studio`,
+                `Purchase Confirmation — mfp studios`,
                 `
                     <h1>Thank you for your purchase!</h1>
                     <p>You've purchased <strong>${paintingTitle}</strong> for ${amountPaid}.</p>
                     <p>Christine will be in touch soon with shipping details.</p>
-                    <p>— Christine's Studio</p>
+                    <p>— mfp studios</p>
                 `
             )
         }

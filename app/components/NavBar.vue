@@ -1,7 +1,7 @@
 <template>
     <nav :class="['navbar', { scrolled }]">
-        <div class="navbar-brand" @click="$emit('navigate', 'gallery')">
-            Christine's Studio
+        <div class="navbar-brand" @click="$emit('navigate', 'Home')">
+            mfp studios
         </div>
         <div class="navbar-links">
             <button
@@ -24,7 +24,7 @@ defineProps({
 
 defineEmits(['navigate'])
 
-const navItems = ['Gallery', 'Shop', 'About', 'Contact']
+const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Contact']
 </script>
 
 <style scoped>
@@ -49,13 +49,12 @@ const navItems = ['Gallery', 'Shop', 'About', 'Contact']
 }
 
 .navbar-brand {
-    font-family: var(--font-display);
+    font-family: var(--font-cursive);
     font-size: 28px;
-    font-weight: 300;
-    letter-spacing: 3px;
+    font-weight: 400;
+    letter-spacing: 1px;
     color: var(--color-brown-dark);
     cursor: pointer;
-    text-transform: uppercase;
 }
 
 .navbar-links {

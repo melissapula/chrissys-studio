@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     css: ['~/assets/css/main.css'],
     app: {
         head: {
-            title: "Christine's Studio — Original Fine Art",
+            title: "mfp studios — Original Fine Art",
             meta: [
                 {
                     name: 'description',

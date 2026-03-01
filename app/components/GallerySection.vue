@@ -4,40 +4,107 @@
             <div class="section-header">
                 <p class="section-label">Portfolio</p>
                 <h2 class="section-title">Gallery</h2>
-                <div class="filter-buttons">
+                <div class="filter-buttons artist-filters">
                     <button
-                        v-for="cat in categories"
-                        :key="cat"
-                        :class="['filter-btn', { active: filter === cat }]"
-                        @click="filter = cat"
+                        v-for="a in artists"
+                        :key="a.value"
+                        :class="['filter-btn', { active: selectedArtist === a.value }]"
+                        @click="selectArtist(a.value)"
                     >
-                        {{ cat === 'still-life' ? 'Still Life' : cat }}
+                        {{ a.label }}
+                    </button>
+                </div>
+                <div class="filter-buttons category-filters">
+                    <button
+                        v-for="cat in categoryOptions"
+                        :key="cat.value"
+                        :class="['filter-btn', { active: selectedCategory === cat.value }]"
+                        @click="selectedCategory = cat.value"
+                    >
+                        {{ cat.label }}
                     </button>
                 </div>
             </div>
-            <div class="paintings-grid">
-                <PaintingCard
-                    v-for="painting in filteredPaintings"
-                    :key="painting.id"
-                    :painting="painting"
+            <div v-if="filteredItems.length > 0" class="gallery-grid">
+                <GalleryCard
+                    v-for="item in filteredItems"
+                    :key="item.id"
+                    :item="item"
                     :show-price="false"
                     @select="$emit('select', $event)"
                 />
             </div>
+            <p v-else class="empty-message">Content coming soon.</p>
         </div>
     </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 defineEmits(['select'])
 
-const { filterByCategory } = usePaintings()
-const filter = ref('all')
-const categories = ['all', 'landscape', 'still-life', 'study']
+const { filterItems } = useGalleryItems()
+const selectedArtist = ref('all')
+const selectedCategory = ref('all')
 
-const filteredPaintings = computed(() => filterByCategory(filter.value))
+const artists = [
+    { label: 'All', value: 'all' },
+    { label: 'Chrissy', value: 'chrissy' },
+    { label: 'Melissa', value: 'melissa' },
+    { label: 'Madison', value: 'madison' },
+    { label: 'Elsa', value: 'elsa' },
+]
+
+const categoryMap = {
+    all: [
+        { label: 'All', value: 'all' },
+        { label: 'Originals', value: 'originals' },
+        { label: 'Prints', value: 'prints' },
+        { label: 'Cosplay', value: 'cosplay' },
+        { label: 'Commissions', value: 'commissions' },
+        { label: 'Poems', value: 'poems' },
+        { label: 'Songs', value: 'songs' },
+        { label: 'Short Stories', value: 'short-stories' },
+        { label: 'Digital Art', value: 'digital-art' },
+    ],
+    chrissy: [
+        { label: 'All', value: 'all' },
+        { label: 'Originals', value: 'originals' },
+        { label: 'Prints', value: 'prints' },
+        { label: 'Cosplay', value: 'cosplay' },
+        { label: 'Commissions', value: 'commissions' },
+    ],
+    melissa: [
+        { label: 'All', value: 'all' },
+        { label: 'Poems', value: 'poems' },
+        { label: 'Songs', value: 'songs' },
+        { label: 'Short Stories', value: 'short-stories' },
+    ],
+    madison: [
+        { label: 'All', value: 'all' },
+        { label: 'Digital Art', value: 'digital-art' },
+        { label: 'Prints', value: 'prints' },
+    ],
+    elsa: [
+        { label: 'All', value: 'all' },
+        { label: 'Originals', value: 'originals' },
+        { label: 'Prints', value: 'prints' },
+    ],
+}
+
+const categoryOptions = computed(() => {
+    return categoryMap[selectedArtist.value] || []
+})
+
+function selectArtist(artist) {
+    selectedArtist.value = artist
+    selectedCategory.value = 'all'
+}
+
+const filteredItems = computed(() =>
+    filterItems(selectedArtist.value, selectedCategory.value)
+)
 </script>
 
 <style scoped>
@@ -62,6 +129,10 @@ const filteredPaintings = computed(() => filterByCategory(filter.value))
     gap: 24px;
     justify-content: center;
     margin-top: 32px;
+}
+
+.category-filters {
+    margin-top: 16px;
 }
 
 .filter-btn {
@@ -89,10 +160,19 @@ const filteredPaintings = computed(() => filterByCategory(filter.value))
     border-bottom-color: var(--color-gold);
 }
 
-.paintings-grid {
+.gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 32px;
+}
+
+.empty-message {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--color-tan);
+    text-align: center;
+    padding: 80px 0;
 }
 
 @media (max-width: 768px) {
@@ -100,7 +180,12 @@ const filteredPaintings = computed(() => filterByCategory(filter.value))
         padding: 80px 20px;
     }
 
-    .paintings-grid {
+    .filter-buttons {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .gallery-grid {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         gap: 24px;
     }

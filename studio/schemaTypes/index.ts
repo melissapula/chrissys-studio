@@ -1,3 +1,4 @@
-import {painting} from './painting'
+import {galleryItem} from './galleryItem'
+import {blogPost} from './blogPost'
 
-export const schemaTypes = [painting]
+export const schemaTypes = [galleryItem, blogPost]

@@ -1,37 +1,36 @@
 <template>
     <section id="about" class="about-section">
-        <div class="about-container">
-            <div class="about-image-col">
-                <div class="about-image-wrapper">
-                    <img
-                        src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80"
-                        alt="Artist at work"
-                    />
-                    <div class="image-border" />
-                </div>
+        <div class="about-header">
+            <p class="section-label">The Artists</p>
+            <h2 class="section-title">About</h2>
+            <div class="filter-buttons">
+                <button
+                    v-for="a in artists"
+                    :key="a.value"
+                    :class="['filter-btn', { active: selectedArtist === a.value }]"
+                    @click="selectedArtist = a.value"
+                >
+                    {{ a.label }}
+                </button>
             </div>
-            <div class="about-text-col">
-                <p class="section-label">The Artist</p>
-                <h2 class="section-title">About Christine</h2>
+        </div>
+        <div class="about-container">
+            <div v-if="current.image" class="about-image-wrapper">
+                <img :src="current.image" :alt="current.name" />
+            </div>
+            <div class="about-scroll-area">
+                <h3 class="about-name">{{ current.name }}</h3>
                 <div class="gold-line" style="margin: 24px 0" />
-                <p class="about-text">
-                    Christine is a painter based in Minnesota whose work
-                    explores the intersection of light, landscape, and memory.
-                    Working primarily in oils, each piece is a meditation on the
-                    quiet beauty found in everyday moments.
-                </p>
-                <p class="about-text">
-                    With over twenty years of creative practice, her paintings
-                    capture the shifting quality of northern light — the way it
-                    transforms familiar places into something luminous and new.
-                </p>
-                <p class="about-text" style="margin-bottom: 32px">
-                    Every painting is an original, one-of-a-kind work. When it's
-                    gone, it's gone — making each piece a unique addition to
-                    your collection.
+                <p
+                    v-for="(paragraph, i) in current.bio"
+                    :key="i"
+                    class="about-text"
+                    :style="i === current.bio.length - 1 ? 'margin-bottom: 32px' : ''"
+                >
+                    {{ paragraph }}
                 </p>
                 <div class="about-stats">
-                    <div v-for="stat in stats" :key="stat.label" class="stat">
+                    <div v-for="stat in current.stats" :key="stat.label" class="stat">
                         <p class="stat-label">{{ stat.label }}</p>
                         <p class="stat-value">{{ stat.value }}</p>
                     </div>
@@ -42,11 +41,55 @@
 </template>
 
 <script setup>
-const stats = [
-    { label: 'Based in', value: 'Minnesota' },
-    { label: 'Medium', value: 'Oil & Acrylic' },
-    { label: 'Works', value: '8+ Originals' },
+import { ref, computed } from 'vue'
+
+const selectedArtist = ref('chrissy')
+
+const artists = [
+    { label: 'Chrissy', value: 'chrissy' },
+    { label: 'Melissa', value: 'melissa' },
+    { label: 'Madison', value: 'madison' },
+    { label: 'Elsa', value: 'elsa' },
 ]
+
+const profiles = {
+    chrissy: {
+        name: 'Chrissy',
+        image: '/images/Chrissy.jpg',
+        bio: [
+            "I'm a self-taught visual artist with a career in Music Education and a Masters in Special Education — focusing on students with Emotional and Behavioral Disorders (wtf, I know).",
+            "My entire life has been focused on understanding the world around me and using that information to help others. I've made it my life's work to help others realize their potential and cheer them on in hopes that they'll go forth in their lives being the best version of themselves and be a fearless and unapologetic positive contributor to the world.",
+            'In whatever I do, I strive to improve the world around me. And in 2021, I came to the realization that in order to remain a positive contributor to our young people and the community I live in, I must be fearless and unapologetic myself.',
+            'Turning that focus towards myself has been the most wild rollercoaster of my life to date. I am happiest when I am creating and as I create, I not only find strength and solace within myself, but feel that I am becoming who I need to be at this point in my life (an awakening, if you will).',
+            'I take inspiration from my present as well as my past. And as I continue to be curious and create different art in my journey to become more fearless and unapologetic, it is my true hope that looking through my art might evoke something within you.',
+            'Be fearless. Be unapologetic. Be curious.',
+            "Create your journey,\ndon't let your journey create you.",
+            '— Chrissy',
+        ],
+        stats: [
+            { label: 'Based in', value: 'Minnesota' },
+            { label: 'Medium', value: 'Acrylic & Mixed Media' },
+            { label: 'Works', value: '8+ Originals' },
+        ],
+    },
+    melissa: {
+        name: 'Melissa',
+        bio: ['Content coming soon.'],
+        stats: [],
+    },
+    madison: {
+        name: 'Madison',
+        bio: ['Content coming soon.'],
+        stats: [],
+    },
+    elsa: {
+        name: 'Elsa',
+        bio: ['Content coming soon.'],
+        stats: [],
+    },
+}
+
+const current = computed(() => profiles[selectedArtist.value])
 </script>
 
 <style scoped>
@@ -55,19 +98,64 @@ const stats = [
     background: var(--color-cream);
 }
 
+.about-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-tan);
+    font-weight: 400;
+    padding: 8px 4px;
+    border-bottom: 1.5px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    color: var(--color-gold);
+}
+
+.filter-btn.active {
+    color: var(--color-gold);
+    font-weight: 500;
+    border-bottom-color: var(--color-gold);
+}
+
 .about-container {
     max-width: 1000px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
-    align-items: center;
+    grid-template-columns: auto 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.about-container:not(:has(.about-image-wrapper)) {
+    grid-template-columns: 1fr;
+    max-width: 700px;
 }
 
 .about-image-wrapper {
-    aspect-ratio: 3/4;
-    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
     overflow: hidden;
+    border: 2px solid rgba(168, 148, 120, 0.3);
+    flex-shrink: 0;
 }
 
 .about-image-wrapper img {
@@ -76,12 +164,35 @@ const stats = [
     object-fit: cover;
 }
 
-.image-border {
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(168, 148, 120, 0.3);
-    margin: 12px;
-    pointer-events: none;
+.about-scroll-area {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 16px;
+}
+
+.about-scroll-area::-webkit-scrollbar {
+    width: 4px;
+}
+
+.about-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.about-scroll-area::-webkit-scrollbar-thumb {
+    background: var(--color-tan-light);
+    border-radius: 2px;
+}
+
+.about-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: var(--color-tan);
+}
+
+.about-name {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--color-brown-dark);
+    margin: 0;
 }
 
 .about-text {
@@ -118,13 +229,19 @@ const stats = [
 }
 
 @media (max-width: 768px) {
-    .about-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
     .about-section {
         padding: 80px 20px;
+    }
+
+    .about-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        justify-items: center;
+    }
+
+    .filter-buttons {
+        flex-wrap: wrap;
+        gap: 12px;
     }
 }
 </style>

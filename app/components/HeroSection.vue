@@ -1,13 +1,13 @@
 <template>
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="hero-pattern" />
         <div class="hero-content">
-            <p class="hero-label">Original Fine Art</p>
-            <h1 class="hero-title">Christine's Studio</h1>
+            <h1 class="hero-title">mfp studios</h1>
+            <p class="hero-label">Art · Writing · Digital Creations</p>
             <div class="gold-line" style="margin: 0 auto 24px" />
             <p class="hero-subtitle">
-                One-of-a-kind paintings capturing light, nature, and quiet
-                moments
+                Original paintings, poetry, songs, and digital art from four
+                creative voices
             </p>
             <div class="hero-actions">
                 <a
@@ -39,6 +39,7 @@ defineEmits(['navigate'])
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 60px;
     position: relative;
     overflow: hidden;
     background: linear-gradient(
@@ -56,6 +57,15 @@ defineEmits(['navigate'])
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
+.hero-title {
+    font-family: var(--font-cursive);
+    font-size: clamp(60px, 10vw, 120px);
+    font-weight: 400;
+    color: #c4622a;
+    margin: 0 0 20px;
+    line-height: 1.1;
+}
+
 .hero-content {
     text-align: center;
     position: relative;
@@ -70,16 +80,6 @@ defineEmits(['navigate'])
     color: var(--color-tan);
     margin: 0 0 20px;
     font-weight: 400;
-}
-
-.hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(48px, 8vw, 96px);
-    font-weight: 300;
-    color: var(--color-brown-dark);
-    margin: 0 0 20px;
-    line-height: 1.05;
-    letter-spacing: -1px;
 }
 
 .hero-subtitle {

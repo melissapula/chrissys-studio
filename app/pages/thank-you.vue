@@ -1,25 +1,26 @@
 <template>
-    <div class="success-page">
-        <div class="success-content">
+    <div class="thank-you-page">
+        <div class="thank-you-content">
             <div class="gold-line" />
-            <h1 class="success-title">Thank You</h1>
-            <p class="success-message">
-                Your purchase is confirmed. We'll be in touch shortly with
-                shipping details.
+            <h1 class="thank-you-title">Thank You</h1>
+            <p class="thank-you-message">
+                Your support means so much and helps keep the studio running.
             </p>
-            <NuxtLink to="/#shop" class="back-link"> Back to Gallery</NuxtLink>
+            <NuxtLink to="/#fuel-the-artist" class="back-link">
+                Back to Site
+            </NuxtLink>
         </div>
     </div>
 </template>
 
 <script setup>
 useHead({
-    title: "Purchase Confirmed — mfp studios",
+    title: "Thank You — mfp studios",
 })
 </script>
 
 <style scoped>
-.success-page {
+.thank-you-page {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -28,7 +29,7 @@ useHead({
     padding: 40px 20px;
 }
 
-.success-content {
+.thank-you-content {
     text-align: center;
     max-width: 480px;
 }
@@ -40,7 +41,7 @@ useHead({
     margin: 0 auto 32px;
 }
 
-.success-title {
+.thank-you-title {
     font-family: var(--font-display);
     font-size: 48px;
     font-weight: 300;
@@ -48,7 +49,7 @@ useHead({
     margin: 0 0 16px;
 }
 
-.success-message {
+.thank-you-message {
     font-family: var(--font-body);
     font-size: 16px;
     color: var(--color-brown-text);
