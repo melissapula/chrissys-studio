@@ -24,7 +24,7 @@ defineProps({
 
 defineEmits(['navigate'])
 
-const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Contact']
+const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Socials', 'Contact']
 </script>
 
 <style scoped>

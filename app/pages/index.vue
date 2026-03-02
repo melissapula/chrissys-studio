@@ -10,6 +10,7 @@
         <ShopSection @select="selectedItem = $event" />
         <AboutSection />
         <SupportSection />
+        <SocialsSection />
         <ContactSection />
         <FooterSection />
         <GalleryModal
@@ -28,6 +29,7 @@ import ShopSection from '../components/ShopSection.vue'
 import GalleryModal from '../components/GalleryModal.vue'
 import AboutSection from '~/components/AboutSection.vue'
 import SupportSection from '~/components/SupportSection.vue'
+import SocialsSection from '~/components/SocialsSection.vue'
 import ContactSection from '~/components/ContactSection.vue'
 import FooterSection from '~/components/FooterSection.vue'
 
