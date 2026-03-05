@@ -1,5 +1,4 @@
 import imageUrlBuilder from '@sanity/image-url'
-import { galleryItems as mockItems } from '~/data/galleryItems'
 
 const GROQ_QUERY = `*[_type in ["galleryItem", "painting"]] | order(displayOrder asc, _createdAt desc) {
   _id,
@@ -50,7 +49,7 @@ export function useGalleryItems() {
         if (sanityItems.value && sanityItems.value.length > 0) {
             return sanityItems.value.map((doc) => mapSanityItem(doc, builder))
         }
-        return mockItems
+        return []
     })
 
     const availableCount = computed(

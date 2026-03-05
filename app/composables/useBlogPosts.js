@@ -1,5 +1,4 @@
 import imageUrlBuilder from '@sanity/image-url'
-import { blogPosts as mockPosts } from '~/data/blogPosts'
 
 const GROQ_QUERY = `*[_type == "blogPost"] | order(publishedAt desc) {
   _id,
@@ -35,7 +34,7 @@ export function useBlogPosts() {
         if (sanityPosts.value && sanityPosts.value.length > 0) {
             return sanityPosts.value.map((doc) => mapSanityPost(doc, builder))
         }
-        return mockPosts
+        return []
     })
 
     return {
