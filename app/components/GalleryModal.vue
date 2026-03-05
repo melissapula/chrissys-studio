@@ -9,7 +9,7 @@
                     <div v-if="typeof item.body === 'string'" class="body-plain">
                         {{ item.body }}
                     </div>
-                    <SanityContent v-else-if="item.body" :blocks="item.body" />
+                    <SanityContent v-else-if="item.body" :value="item.body" />
                 </div>
                 <div class="modal-details">
                     <h2 class="modal-title">{{ item.title }}</h2>

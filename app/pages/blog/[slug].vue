@@ -12,7 +12,7 @@
                 <h1 class="post-title">{{ post.title }}</h1>
                 <div class="gold-line" />
                 <div class="post-body">
-                    <SanityContent :blocks="post.body" />
+                    <SanityContent :value="post.body" />
                 </div>
             </article>
         </template>
