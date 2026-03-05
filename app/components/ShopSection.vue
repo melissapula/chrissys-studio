@@ -131,7 +131,7 @@ const filteredShopItems = computed(() => {
         result = result.filter((item) => item.artist === selectedArtist.value)
     }
     if (selectedCategory.value !== 'all') {
-        result = result.filter((item) => item.category === selectedCategory.value)
+        result = result.filter((item) => item.categories.includes(selectedCategory.value))
     }
     if (selectedAvailability.value === 'available') {
         result = result.filter((item) => !item.sold)

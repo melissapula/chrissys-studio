@@ -4,32 +4,39 @@ import { galleryItems as mockItems } from '~/data/galleryItems'
 const GROQ_QUERY = `*[_type in ["galleryItem", "painting"]] | order(displayOrder asc, _createdAt desc) {
   _id,
   title,
+  "slug": slug.current,
   artist,
   medium,
   dimensions,
   price,
   sold,
   year,
-  category,
+  "categories": coalesce(categories, [category]),
   image,
   body
 }`
+
+const TEXT_CATEGORIES = ['poems', 'songs', 'short-stories']
 
 function mapSanityItem(doc, builder) {
     return {
         id: doc._id,
         title: doc.title,
+        slug: doc.slug,
         artist: doc.artist || 'chrissy',
         medium: doc.medium,
         dimensions: doc.dimensions,
         price: doc.price,
         sold: doc.sold ?? false,
         year: doc.year,
-        category: doc.category,
+        categories: doc.categories?.filter(Boolean) || [],
         image: doc.image
             ? builder.image(doc.image).width(800).quality(80).url()
             : null,
         body: doc.body,
+        isTextContent: (doc.categories || []).some((c) =>
+            TEXT_CATEGORIES.includes(c)
+        ),
     }
 }
 
@@ -56,7 +63,7 @@ export function useGalleryItems() {
             result = result.filter((item) => item.artist === artist)
         }
         if (category && category !== 'all') {
-            result = result.filter((item) => item.category === category)
+            result = result.filter((item) => item.categories.includes(category))
         }
         return result
     }

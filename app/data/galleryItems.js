@@ -8,7 +8,7 @@ export const galleryItems = [
         price: 850,
         sold: false,
         year: 2024,
-        category: 'originals',
+        categories: ['originals'],
         image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&q=80',
     },
     {
@@ -20,7 +20,7 @@ export const galleryItems = [
         price: 620,
         sold: true,
         year: 2024,
-        category: 'originals',
+        categories: ['originals'],
         image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80',
     },
     {
@@ -32,7 +32,7 @@ export const galleryItems = [
         price: 1200,
         sold: false,
         year: 2023,
-        category: 'originals',
+        categories: ['originals'],
         image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=800&q=80',
     },
     {
@@ -44,7 +44,7 @@ export const galleryItems = [
         price: 380,
         sold: false,
         year: 2024,
-        category: 'prints',
+        categories: ['prints'],
         image: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=800&q=80',
     },
     {
@@ -56,7 +56,7 @@ export const galleryItems = [
         price: 1800,
         sold: true,
         year: 2023,
-        category: 'originals',
+        categories: ['originals'],
         image: 'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=800&q=80',
     },
     {
@@ -68,7 +68,7 @@ export const galleryItems = [
         price: 540,
         sold: false,
         year: 2024,
-        category: 'commissions',
+        categories: ['commissions'],
         image: 'https://images.unsplash.com/photo-1482160549825-59d1b23cb208?w=800&q=80',
     },
     {
@@ -80,7 +80,7 @@ export const galleryItems = [
         price: 450,
         sold: false,
         year: 2024,
-        category: 'prints',
+        categories: ['prints'],
         image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80',
     },
     {
@@ -92,7 +92,7 @@ export const galleryItems = [
         price: 780,
         sold: false,
         year: 2023,
-        category: 'originals',
+        categories: ['originals'],
         image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80',
     },
 ]

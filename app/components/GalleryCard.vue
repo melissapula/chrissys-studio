@@ -3,7 +3,7 @@
         class="gallery-card"
         @mouseenter="hovered = true"
         @mouseleave="hovered = false"
-        @click="$emit('select', item)"
+        @click="handleClick"
     >
         <div v-if="item.image" class="card-image-wrapper">
             <img
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div v-else class="card-text-wrapper" :class="{ hovered }">
-            <span class="card-category-label">{{ item.category }}</span>
+            <span class="card-category-label">{{ (item.categories || [])[0] }}</span>
             <p class="card-body-excerpt">
                 {{ bodyExcerpt }}
             </p>
@@ -53,9 +53,22 @@ const props = defineProps({
     showPrice: { type: Boolean, default: false },
 })
 
-defineEmits(['select'])
+const emit = defineEmits(['select'])
 
 const hovered = ref(false)
+
+const TEXT_CATEGORIES = ['poems', 'songs', 'short-stories']
+
+function handleClick() {
+    const isTextContent = (props.item.categories || []).some((c) =>
+        TEXT_CATEGORIES.includes(c)
+    )
+    if (isTextContent && props.item.slug) {
+        navigateTo(`/gallery/${props.item.slug}`)
+    } else {
+        emit('select', props.item)
+    }
+}
 
 const bodyExcerpt = computed(() => {
     if (!props.item.body) return ''

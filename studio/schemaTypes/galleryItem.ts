@@ -27,9 +27,19 @@ export const galleryItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'string',
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{type: 'string'}],
       options: {
         list: [
           {title: 'Originals', value: 'originals'},
@@ -41,9 +51,8 @@ export const galleryItem = defineType({
           {title: 'Short Stories', value: 'short-stories'},
           {title: 'Digital Art', value: 'digital-art'},
         ],
-        layout: 'radio',
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().min(1),
     }),
     defineField({
       name: 'medium',
