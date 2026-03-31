@@ -55,7 +55,7 @@ export function useGalleryItems() {
     })
 
     const availableCount = computed(
-        () => items.value.filter((item) => item.price && !item.sold).length
+        () => items.value.filter((item) => item.price).length
     )
 
     const filterItems = (artist, category) => {

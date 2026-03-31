@@ -12,7 +12,7 @@
                 class="card-image"
                 :class="{ hovered }"
             />
-            <div v-if="item.sold" class="sold-badge">Sold</div>
+            <div v-if="item.sold && !hasNonOriginalOptions" class="sold-badge">Sold</div>
             <div class="card-overlay" :class="{ visible: hovered }">
                 <p v-if="item.medium" class="card-meta">
                     {{ item.medium }}
@@ -72,9 +72,7 @@ function handleClick() {
     }
 }
 
-const hasMultipleOptions = computed(
-    () => props.item.purchaseOptions && props.item.purchaseOptions.length > 1
-)
+const hasMultipleOptions = computed(() => availableOptions.value.length > 1)
 
 const hasNonOriginalOptions = computed(
     () =>
@@ -84,11 +82,23 @@ const hasNonOriginalOptions = computed(
         )
 )
 
-const lowestPrice = computed(() => {
+const availableOptions = computed(() => {
     if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
-        return Math.min(...props.item.purchaseOptions.map((o) => o.price))
+        if (props.item.sold) {
+            return props.item.purchaseOptions.filter(
+                (o) => o.label.toLowerCase() !== 'original'
+            )
+        }
+        return props.item.purchaseOptions
     }
-    return props.item.price
+    return []
+})
+
+const lowestPrice = computed(() => {
+    if (availableOptions.value.length > 0) {
+        return Math.min(...availableOptions.value.map((o) => o.price))
+    }
+    return props.item.sold ? null : props.item.price
 })
 
 const bodyExcerpt = computed(() => {

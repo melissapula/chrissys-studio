@@ -5,8 +5,8 @@
                 <p class="section-label">Original Works</p>
                 <h2 class="section-title">Shop</h2>
                 <p class="shop-count">
-                    {{ displayedAvailableCount }} original
-                    {{ displayedAvailableCount === 1 ? 'piece' : 'pieces' }}
+                    {{ displayedCount }}
+                    {{ displayedCount === 1 ? 'piece' : 'pieces' }}
                     available
                 </p>
                 <div class="filter-buttons artist-filters">
@@ -62,7 +62,7 @@ defineEmits(['select'])
 const { items } = useGalleryItems()
 const selectedArtist = ref('all')
 const selectedCategory = ref('all')
-const selectedAvailability = ref('available')
+const selectedAvailability = ref('all')
 
 const artists = [
     { label: 'All', value: 'all' },
@@ -110,9 +110,9 @@ const categoryMap = {
 }
 
 const availabilityOptions = [
-    { label: 'Available', value: 'available' },
-    { label: 'Sold', value: 'sold' },
     { label: 'All', value: 'all' },
+    { label: 'Original Available', value: 'original-available' },
+    { label: 'Original Sold', value: 'original-sold' },
 ]
 
 const categoryOptions = computed(() => {
@@ -133,18 +133,16 @@ const filteredShopItems = computed(() => {
     if (selectedCategory.value !== 'all') {
         result = result.filter((item) => item.categories.includes(selectedCategory.value))
     }
-    if (selectedAvailability.value === 'available') {
+    if (selectedAvailability.value === 'original-available') {
         result = result.filter((item) => !item.sold)
-    } else if (selectedAvailability.value === 'sold') {
+    } else if (selectedAvailability.value === 'original-sold') {
         result = result.filter((item) => item.sold)
     }
 
     return result
 })
 
-const displayedAvailableCount = computed(() =>
-    filteredShopItems.value.filter((item) => !item.sold).length
-)
+const displayedCount = computed(() => filteredShopItems.value.length)
 </script>
 
 <style scoped>

@@ -31,9 +31,7 @@
                         </div>
                         <div v-if="item.price" class="detail-row">
                             <span class="detail-label">Status</span>
-                            <span class="detail-value">{{
-                                item.sold ? 'Sold' : 'Available'
-                            }}</span>
+                            <span class="detail-value">Available</span>
                         </div>
                     </div>
 
@@ -49,9 +47,8 @@
                                     v-for="(opt, i) in buyingOptions"
                                     :key="i"
                                     :value="i"
-                                    :disabled="opt.disabled"
                                 >
-                                    {{ opt.label }} — ${{ opt.price.toLocaleString() }}{{ opt.disabled ? ' (Sold)' : '' }}
+                                    {{ opt.label }} — ${{ opt.price.toLocaleString() }}
                                 </option>
                             </select>
                         </div>
@@ -59,7 +56,6 @@
                             ${{ selectedOption.price.toLocaleString() }}
                         </p>
                         <button
-                            v-if="!selectedOption.disabled"
                             class="purchase-btn"
                             :disabled="addedToCart"
                             @click="handleAddToCart"
@@ -70,9 +66,6 @@
                                     : `Add ${selectedOption.label} to Cart`
                             }}
                         </button>
-                        <p v-if="selectedOption.disabled" class="sold-notice">
-                            This original has been sold
-                        </p>
                         <p class="purchase-note">
                             Free shipping within the US · Secure checkout via
                             Stripe
@@ -101,19 +94,19 @@ const buyingOptions = computed(() => {
     if (!props.item) return []
 
     if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
-        return props.item.purchaseOptions.map((opt) => ({
-            label: opt.label,
-            price: opt.price,
-            disabled: opt.label.toLowerCase() === 'original' && props.item.sold,
-        }))
+        return props.item.purchaseOptions
+            .filter((opt) => !(opt.label.toLowerCase() === 'original' && props.item.sold))
+            .map((opt) => ({
+                label: opt.label,
+                price: opt.price,
+            }))
     }
 
-    if (props.item.price) {
+    if (props.item.price && !props.item.sold) {
         return [
             {
                 label: 'Original',
                 price: props.item.price,
-                disabled: props.item.sold,
             },
         ]
     }
@@ -124,10 +117,8 @@ const buyingOptions = computed(() => {
 const selectedOption = computed(() => buyingOptions.value[selectedOptionIndex.value] || buyingOptions.value[0])
 
 watch(buyingOptions, () => {
-    const current = buyingOptions.value[selectedOptionIndex.value]
-    if (!current || current.disabled) {
-        const firstAvailable = buyingOptions.value.findIndex((o) => !o.disabled)
-        if (firstAvailable >= 0) selectedOptionIndex.value = firstAvailable
+    if (selectedOptionIndex.value >= buyingOptions.value.length) {
+        selectedOptionIndex.value = 0
     }
 })
 
@@ -295,18 +286,6 @@ function handleAddToCart() {
     color: var(--color-text-light);
 }
 
-.option-select option:disabled {
-    color: var(--color-tan);
-    font-style: italic;
-}
-
-.sold-notice {
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--color-tan);
-    font-style: italic;
-    margin: 0 0 12px;
-}
 
 .modal-price {
     font-family: var(--font-display);
