@@ -37,21 +37,42 @@
                         </div>
                     </div>
 
-                    <template v-if="item.price && !item.sold">
+                    <template v-if="buyingOptions.length > 0">
+                        <div v-if="buyingOptions.length > 1" class="option-selector">
+                            <label class="option-label" for="purchase-option">Purchase Option</label>
+                            <select
+                                id="purchase-option"
+                                v-model="selectedOptionIndex"
+                                class="option-select"
+                            >
+                                <option
+                                    v-for="(opt, i) in buyingOptions"
+                                    :key="i"
+                                    :value="i"
+                                    :disabled="opt.disabled"
+                                >
+                                    {{ opt.label }} — ${{ opt.price.toLocaleString() }}{{ opt.disabled ? ' (Sold)' : '' }}
+                                </option>
+                            </select>
+                        </div>
                         <p class="modal-price">
-                            ${{ item.price.toLocaleString() }}
+                            ${{ selectedOption.price.toLocaleString() }}
                         </p>
                         <button
+                            v-if="!selectedOption.disabled"
                             class="purchase-btn"
-                            :disabled="purchasing"
-                            @click="handlePurchase"
+                            :disabled="addedToCart"
+                            @click="handleAddToCart"
                         >
                             {{
-                                purchasing
-                                    ? 'Redirecting to checkout…'
-                                    : 'Purchase This Piece'
+                                addedToCart
+                                    ? 'Added to Cart!'
+                                    : `Add ${selectedOption.label} to Cart`
                             }}
                         </button>
+                        <p v-if="selectedOption.disabled" class="sold-notice">
+                            This original has been sold
+                        </p>
                         <p class="purchase-note">
                             Free shipping within the US · Secure checkout via
                             Stripe
@@ -70,31 +91,55 @@ const props = defineProps({
     item: { type: Object, default: null },
 })
 
-defineEmits(['close'])
+const emit = defineEmits(['close'])
 
-const purchasing = ref(false)
+const { addToCart, openCart } = useCart()
+const addedToCart = ref(false)
+const selectedOptionIndex = ref(0)
 
-async function handlePurchase() {
-    if (!props.item || purchasing.value) return
-    purchasing.value = true
+const buyingOptions = computed(() => {
+    if (!props.item) return []
 
-    try {
-        const { url } = await $fetch('/api/checkout', {
-            method: 'POST',
-            body: {
-                title: props.item.title,
-                price: props.item.price,
-                image: props.item.image,
-                paintingId: props.item.id,
-            },
-        })
-        if (url) {
-            window.location.href = url
-        }
-    } catch {
-        purchasing.value = false
-        alert('Something went wrong. Please try again.')
+    if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
+        return props.item.purchaseOptions.map((opt) => ({
+            label: opt.label,
+            price: opt.price,
+            disabled: opt.label.toLowerCase() === 'original' && props.item.sold,
+        }))
     }
+
+    if (props.item.price) {
+        return [
+            {
+                label: 'Original',
+                price: props.item.price,
+                disabled: props.item.sold,
+            },
+        ]
+    }
+
+    return []
+})
+
+const selectedOption = computed(() => buyingOptions.value[selectedOptionIndex.value] || buyingOptions.value[0])
+
+watch(buyingOptions, () => {
+    const current = buyingOptions.value[selectedOptionIndex.value]
+    if (!current || current.disabled) {
+        const firstAvailable = buyingOptions.value.findIndex((o) => !o.disabled)
+        if (firstAvailable >= 0) selectedOptionIndex.value = firstAvailable
+    }
+})
+
+function handleAddToCart() {
+    if (!props.item || !selectedOption.value || addedToCart.value) return
+    addToCart(props.item, selectedOption.value)
+    addedToCart.value = true
+    setTimeout(() => {
+        addedToCart.value = false
+        emit('close')
+        openCart()
+    }, 600)
 }
 </script>
 
@@ -204,6 +249,63 @@ async function handlePurchase() {
 
 .detail-value.artist-name {
     text-transform: capitalize;
+}
+
+.option-selector {
+    margin-bottom: 20px;
+}
+
+.option-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-tan);
+    margin-bottom: 8px;
+}
+
+.option-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--color-text-light);
+    font-family: var(--font-body);
+    font-size: 14px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c4a97d' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    transition: border-color 0.3s ease;
+}
+
+.option-select:hover {
+    border-color: var(--color-gold);
+}
+
+.option-select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+}
+
+.option-select option {
+    background: var(--color-brown-dark, #3a3028);
+    color: var(--color-text-light);
+}
+
+.option-select option:disabled {
+    color: var(--color-tan);
+    font-style: italic;
+}
+
+.sold-notice {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-tan);
+    font-style: italic;
+    margin: 0 0 12px;
 }
 
 .modal-price {

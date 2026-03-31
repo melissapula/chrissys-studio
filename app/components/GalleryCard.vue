@@ -31,14 +31,16 @@
         <div class="card-info">
             <h3 class="card-title">{{ item.title }}</h3>
             <p
-                v-if="showPrice && item.price"
+                v-if="showPrice && lowestPrice"
                 class="card-price"
-                :class="{ sold: item.sold }"
+                :class="{ sold: item.sold && !hasNonOriginalOptions }"
             >
                 {{
-                    item.sold
+                    item.sold && !hasNonOriginalOptions
                         ? 'Sold'
-                        : `$${item.price.toLocaleString()}`
+                        : hasMultipleOptions
+                          ? `From $${lowestPrice.toLocaleString()}`
+                          : `$${lowestPrice.toLocaleString()}`
                 }}
             </p>
         </div>
@@ -70,6 +72,25 @@ function handleClick() {
     }
 }
 
+const hasMultipleOptions = computed(
+    () => props.item.purchaseOptions && props.item.purchaseOptions.length > 1
+)
+
+const hasNonOriginalOptions = computed(
+    () =>
+        props.item.purchaseOptions &&
+        props.item.purchaseOptions.some(
+            (o) => o.label.toLowerCase() !== 'original'
+        )
+)
+
+const lowestPrice = computed(() => {
+    if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
+        return Math.min(...props.item.purchaseOptions.map((o) => o.price))
+    }
+    return props.item.price
+})
+
 const bodyExcerpt = computed(() => {
     if (!props.item.body) return ''
     const text =
@@ -88,11 +109,15 @@ const bodyExcerpt = computed(() => {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(44, 36, 22, 0.15);
+    transition:
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .gallery-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(44, 36, 22, 0.25);
 }
 
 .card-image-wrapper {

@@ -17,6 +17,7 @@
             :item="selectedItem"
             @close="selectedItem = null"
         />
+        <CartDrawer />
     </div>
 </template>
 
@@ -32,6 +33,7 @@ import SupportSection from '~/components/SupportSection.vue'
 import SocialsSection from '~/components/SocialsSection.vue'
 import ContactSection from '~/components/ContactSection.vue'
 import FooterSection from '~/components/FooterSection.vue'
+import CartDrawer from '~/components/CartDrawer.vue'
 
 const activeSection = ref('Gallery')
 const scrolled = ref(false)

@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url'
 
-const GROQ_QUERY = `*[_type in ["galleryItem", "painting"]] | order(displayOrder asc, _createdAt desc) {
+const GROQ_QUERY = `*[_type == "galleryItem"] | order(displayOrder asc, _createdAt desc) {
   _id,
   title,
   "slug": slug.current,
@@ -12,7 +12,8 @@ const GROQ_QUERY = `*[_type in ["galleryItem", "painting"]] | order(displayOrder
   year,
   "categories": coalesce(categories, [category]),
   image,
-  body
+  body,
+  purchaseOptions
 }`
 
 const TEXT_CATEGORIES = ['poems', 'songs', 'short-stories']
@@ -33,6 +34,7 @@ function mapSanityItem(doc, builder) {
             ? builder.image(doc.image).width(800).quality(80).url()
             : null,
         body: doc.body,
+        purchaseOptions: doc.purchaseOptions || [],
         isTextContent: (doc.categories || []).some((c) =>
             TEXT_CATEGORIES.includes(c)
         ),

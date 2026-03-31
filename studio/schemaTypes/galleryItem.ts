@@ -66,7 +66,7 @@ export const galleryItem = defineType({
     }),
     defineField({
       name: 'price',
-      title: 'Price',
+      title: 'Price (Original)',
       type: 'number',
       validation: (rule) => rule.positive(),
     }),
@@ -75,6 +75,36 @@ export const galleryItem = defineType({
       title: 'Sold',
       type: 'boolean',
       initialValue: false,
+    }),
+    defineField({
+      name: 'purchaseOptions',
+      title: 'Purchase Options',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'price',
+              title: 'Price',
+              type: 'number',
+              validation: (rule) => rule.required().positive(),
+            }),
+          ],
+          preview: {
+            select: {title: 'label', subtitle: 'price'},
+            prepare({title, subtitle}) {
+              return {title, subtitle: subtitle ? `$${subtitle}` : ''}
+            },
+          },
+        },
+      ],
     }),
     defineField({
       name: 'year',

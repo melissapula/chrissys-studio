@@ -13,6 +13,9 @@
 </template>
 
 <script setup>
+const { clearCart } = useCart()
+clearCart()
+
 useHead({
     title: "Purchase Confirmed — mfp studios",
 })

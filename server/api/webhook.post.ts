@@ -17,6 +17,12 @@ async function sendEmail(
     })
 }
 
+interface CartItem {
+    paintingId?: string
+    title: string
+    optionLabel: string
+}
+
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const stripe = new Stripe(config.stripeSecretKey)
@@ -53,17 +59,35 @@ export default defineEventHandler(async (event) => {
             return { received: true }
         }
 
-        const paintingId = session.metadata?.paintingId
         const customerEmail = session.customer_details?.email
-        const paintingTitle = session.metadata?.paintingTitle || 'a painting'
         const amountPaid = session.amount_total
             ? `$${(session.amount_total / 100).toFixed(2)}`
             : 'N/A'
 
-        if (paintingId) {
-            const sanity = useSanityWriteClient()
-            await sanity.patch(paintingId).set({ sold: true }).commit()
+        let purchasedItems: CartItem[] = []
+
+        if (session.metadata?.cartItems) {
+            purchasedItems = JSON.parse(session.metadata.cartItems)
+        } else if (session.metadata?.paintingId) {
+            purchasedItems = [
+                {
+                    paintingId: session.metadata.paintingId,
+                    title: session.metadata.paintingTitle || 'a painting',
+                    optionLabel: session.metadata.optionLabel || 'Original',
+                },
+            ]
         }
+
+        const sanity = useSanityWriteClient()
+        for (const item of purchasedItems) {
+            if (item.paintingId && item.optionLabel.toLowerCase() === 'original') {
+                await sanity.patch(item.paintingId).set({ sold: true }).commit()
+            }
+        }
+
+        const itemListHtml = purchasedItems
+            .map((i) => `<li>${i.title} (${i.optionLabel})</li>`)
+            .join('')
 
         const from = "Four Seasons Studio <hello@fourseasonsstudio.com>"
 
@@ -75,7 +99,8 @@ export default defineEventHandler(async (event) => {
                 `Purchase Confirmation — mfp studios`,
                 `
                     <h1>Thank you for your purchase!</h1>
-                    <p>You've purchased <strong>${paintingTitle}</strong> for ${amountPaid}.</p>
+                    <p>You purchased the following for ${amountPaid}:</p>
+                    <ul>${itemListHtml}</ul>
                     <p>Christine will be in touch soon with shipping details.</p>
                     <p>— mfp studios</p>
                 `
@@ -87,12 +112,12 @@ export default defineEventHandler(async (event) => {
                 config.resendApiKey,
                 from,
                 config.sellerEmail,
-                `New Sale — ${paintingTitle}`,
+                `New Sale — ${purchasedItems.map((i) => i.title).join(', ')}`,
                 `
                     <h1>You made a sale!</h1>
-                    <p><strong>${paintingTitle}</strong> was purchased for ${amountPaid}.</p>
+                    <p>The following items were purchased for ${amountPaid}:</p>
+                    <ul>${itemListHtml}</ul>
                     <p>Customer email: ${customerEmail || 'Not provided'}</p>
-                    <p>Painting ID: ${paintingId || 'Unknown'}</p>
                 `
             )
         }
