@@ -33,15 +33,25 @@ const artists = [
         name: 'Chrissy',
         links: [
             { platform: 'LinkedIn', url: 'https://www.linkedin.com/in/christine-freundschuh-pula-a8a044292/' },
+            { platform: 'Instagram', url: 'https://www.instagram.com/christinefreundschula' },
         ],
     },
     {
         name: 'Melissa',
-        links: [],
+        links: [
+            { platform: 'LinkedIn', url: 'https://www.linkedin.com/in/melissa-freundschuh-pula-833748172' },
+            { platform: 'Portfolio', url: 'https://melissapula.github.io/#/' },
+            { platform: 'GitHub', url: 'https://github.com/melissapula' },
+        ],
     },
     {
         name: 'Madison',
-        links: [],
+        links: [
+            { platform: 'Tumblr', url: 'https://starlight-is-silly117.tumblr.com/?source=share' },
+            { platform: 'YouTube (FNaF)', url: 'https://youtube.com/@starlight-is-silly117?si=Bjgs5r9Hr5ZSbGO7' },
+            { platform: 'YouTube (Poppy Playtime)', url: 'https://youtube.com/@starlight_is_silly11707?si=NTczkWfYKKqDyd9N' },
+            { platform: 'Discord', url: 'https://discord.com/users/1360336777700708574' },
+        ],
     },
     {
         name: 'Elsa',

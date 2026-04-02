@@ -16,6 +16,7 @@
         </div>
         <div class="about-container">
             <div v-if="current.image" class="about-image-wrapper">
+                <div class="image-shield" />
                 <img :src="current.image" :alt="current.name" />
             </div>
             <div class="about-scroll-area">
@@ -74,7 +75,14 @@ const profiles = {
     },
     melissa: {
         name: 'Melissa',
-        bio: ['Content coming soon.'],
+        bio: [
+            "Hi, I'm Missa — a full-stack software engineer by day and a writer by heart.",
+            'On the technical side, I build things that live at the intersection of functionality and craft. My work spans front-end architecture, design systems, and data visualization, with a deep focus on creating interfaces that are both powerful and intuitive. I care about writing clean, maintainable code and building tools that genuinely make people\'s lives easier.',
+            'But software is only part of the story.',
+            "I've always been drawn to words — the kind that don't fit neatly into a code editor. I write poetry, songs, and short stories: sometimes raw and honest, sometimes playful, always personal. Writing is where I slow down, sit with an idea, and let it become something real.",
+            "Whether I'm debugging a tricky component or chasing the right line in a poem, the process feels the same to me — a problem worth solving, a thing worth making beautiful.",
+            'Thanks for being here.',
+        ],
         stats: [],
     },
     madison: {
@@ -150,6 +158,7 @@ const current = computed(() => profiles[selectedArtist.value])
 }
 
 .about-image-wrapper {
+    position: relative;
     width: 220px;
     height: 220px;
     border-radius: 50%;
