@@ -283,5 +283,13 @@ async function handleTip() {
     .support-card {
         padding: 36px 28px;
     }
+
+    .card-title {
+        font-size: 22px;
+    }
+
+    .amount-buttons {
+        flex-wrap: wrap;
+    }
 }
 </style>

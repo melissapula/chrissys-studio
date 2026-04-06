@@ -74,4 +74,10 @@ useHead({
     background: var(--color-gold);
     color: #fff;
 }
+
+@media (max-width: 768px) {
+    .thank-you-title {
+        font-size: 32px;
+    }
+}
 </style>

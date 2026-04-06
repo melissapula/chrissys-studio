@@ -272,5 +272,18 @@ const current = computed(() => profiles[selectedArtist.value])
         flex-wrap: wrap;
         gap: 12px;
     }
+
+    .about-image-wrapper {
+        width: 160px;
+        height: 160px;
+    }
+
+    .about-name {
+        font-size: 24px;
+    }
+
+    .about-text {
+        font-size: 16px;
+    }
 }
 </style>

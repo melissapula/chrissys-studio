@@ -41,6 +41,13 @@ img {
     -webkit-touch-callout: none;
 }
 
+.image-shield {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: transparent;
+}
+
 ::placeholder {
     color: var(--color-tan-lighter);
 }
@@ -94,6 +101,12 @@ img {
     font-weight: 300;
     color: var(--color-brown-dark);
     margin: 0 0 12px;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 32px;
+    }
 }
 
 .gold-line {

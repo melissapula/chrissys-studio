@@ -3,6 +3,7 @@
         <div v-if="item" class="modal-backdrop" @click="$emit('close')">
             <div class="modal-content" @click.stop>
                 <div v-if="item.image" class="modal-image">
+                    <div class="image-shield" />
                     <img :src="item.image" :alt="item.title" />
                 </div>
                 <div v-else class="modal-text-body">
@@ -160,6 +161,7 @@ function handleAddToCart() {
 }
 
 .modal-image {
+    position: relative;
     flex: 1.3;
     max-height: 80vh;
 }
@@ -347,6 +349,10 @@ function handleAddToCart() {
 }
 
 @media (max-width: 768px) {
+    .modal-backdrop {
+        padding: 20px;
+    }
+
     .modal-content {
         flex-direction: column;
         gap: 24px;
@@ -359,9 +365,28 @@ function handleAddToCart() {
         width: 100%;
     }
 
+    .modal-text-body {
+        padding: 32px 24px;
+        font-size: 18px;
+    }
+
     .modal-details {
         flex: none;
         width: 100%;
+    }
+
+    .modal-title {
+        font-size: 26px;
+    }
+
+    .modal-price {
+        font-size: 24px;
+    }
+
+    .close-btn {
+        top: -12px;
+        right: -4px;
+        font-size: 24px;
     }
 }
 </style>

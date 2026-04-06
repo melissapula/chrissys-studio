@@ -80,4 +80,14 @@ const currentYear = new Date().getFullYear()
 .footer-credit a:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 36px 20px;
+    }
+
+    .footer-brand {
+        font-size: 20px;
+    }
+}
 </style>

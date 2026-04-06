@@ -306,5 +306,9 @@ async function handleSubmit() {
     .type-buttons {
         flex-direction: column;
     }
+
+    .contact-subtitle {
+        font-size: 16px;
+    }
 }
 </style>

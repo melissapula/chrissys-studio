@@ -6,6 +6,7 @@
         @click="handleClick"
     >
         <div v-if="item.image" class="card-image-wrapper">
+            <div class="image-shield" />
             <img
                 :src="item.image"
                 :alt="item.title"
@@ -255,5 +256,15 @@ const bodyExcerpt = computed(() => {
 
 .card-price.sold {
     color: var(--color-tan);
+}
+
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 16px;
+    }
+
+    .card-text-wrapper {
+        padding: 24px 16px;
+    }
 }
 </style>
