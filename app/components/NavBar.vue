@@ -24,21 +24,43 @@
             <a class="nav-icon" href="https://www.instagram.com/christinefreundschula" target="_blank" rel="noopener noreferrer" title="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
+            <button class="hamburger" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen">
+                <span />
+                <span />
+                <span />
+            </button>
+        </div>
+        <div class="mobile-menu" :class="{ open: menuOpen }">
+            <button
+                v-for="item in navItems"
+                :key="item"
+                :class="['mobile-link', { active: active === item }]"
+                @click="handleMobileNav(item)"
+            >
+                {{ item }}
+            </button>
         </div>
     </nav>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
     active: { type: String, default: 'gallery' },
     scrolled: { type: Boolean, default: false },
 })
 
-defineEmits(['navigate'])
+const emit = defineEmits(['navigate'])
 
 const { itemCount, toggleCart } = useCart()
 
+const menuOpen = ref(false)
+
 const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Socials', 'Contact']
+
+function handleMobileNav(item) {
+    menuOpen.value = false
+    emit('navigate', item)
+}
 </script>
 
 <style scoped>
@@ -147,9 +169,49 @@ const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Socia
     line-height: 1;
 }
 
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--color-brown-dark);
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.mobile-menu {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .navbar {
         padding: 16px 20px;
+        flex-wrap: wrap;
+    }
+
+    .navbar.scrolled {
+        padding: 12px 20px;
     }
 
     .navbar-brand {
@@ -158,12 +220,7 @@ const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Socia
     }
 
     .navbar-links {
-        gap: 16px;
-    }
-
-    .nav-link {
-        font-size: 11px;
-        letter-spacing: 1px;
+        display: none;
     }
 
     .navbar-icons {
@@ -173,6 +230,50 @@ const navItems = ['Gallery', 'Shop', 'About', 'Fuel the Artists', 'Blog', 'Socia
     .nav-icon svg {
         width: 18px;
         height: 18px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        padding: 0 8px;
+    }
+
+    .mobile-menu.open {
+        max-height: 500px;
+        padding: 16px 8px 8px;
+    }
+
+    .mobile-link {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 14px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-brown-text);
+        font-weight: 400;
+        padding: 12px 0;
+        text-align: left;
+        border-bottom: 1px solid rgba(168, 148, 120, 0.1);
+        transition: color 0.3s ease;
+    }
+
+    .mobile-link:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-link:hover,
+    .mobile-link.active {
+        color: var(--color-gold);
     }
 }
 </style>
