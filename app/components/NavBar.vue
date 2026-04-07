@@ -1,5 +1,5 @@
 <template>
-    <nav :class="['navbar', { scrolled }]">
+    <nav :class="['navbar', { scrolled: scrolled || menuOpen, 'menu-open': menuOpen }]">
         <div class="navbar-brand" @click="$emit('navigate', 'Home')">
             mfp studios
         </div>
@@ -244,11 +244,18 @@ function handleMobileNav(item) {
         overflow: hidden;
         transition: max-height 0.3s ease, padding 0.3s ease;
         padding: 0 8px;
+        background: rgba(252, 250, 247, 0.98);
+        backdrop-filter: blur(12px);
+        margin: 0 -20px;
+        padding-left: 28px;
+        padding-right: 28px;
     }
 
     .mobile-menu.open {
         max-height: 500px;
-        padding: 16px 8px 8px;
+        padding-top: 16px;
+        padding-bottom: 8px;
+        border-top: 1px solid rgba(168, 148, 120, 0.15);
     }
 
     .mobile-link {
