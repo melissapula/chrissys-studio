@@ -133,10 +133,10 @@ const filteredShopItems = computed(() => {
     if (selectedCategory.value !== 'all') {
         result = result.filter((item) => item.categories.includes(selectedCategory.value))
     }
-    if (selectedAvailability.value === 'original-available') {
-        result = result.filter((item) => !item.sold)
-    } else if (selectedAvailability.value === 'original-sold') {
+    if (selectedAvailability.value === 'original-sold') {
         result = result.filter((item) => item.sold)
+    } else {
+        result = result.filter((item) => !item.sold)
     }
 
     return result
