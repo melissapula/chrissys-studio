@@ -49,6 +49,7 @@ export default defineNuxtConfig({
                 },
                 { property: 'og:url', content: 'https://fourseasonsstudio.com' },
                 { property: 'og:site_name', content: 'mfp studios' },
+                { property: 'og:image', content: 'https://fourseasonsstudio.com/og-image.png' },
                 { name: 'twitter:card', content: 'summary_large_image' },
                 { name: 'twitter:title', content: 'mfp studios — Original Fine Art' },
                 {
@@ -56,6 +57,7 @@ export default defineNuxtConfig({
                     content:
                         'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
                 },
+                { name: 'twitter:image', content: 'https://fourseasonsstudio.com/og-image.png' },
             ],
             link: [
                 { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
