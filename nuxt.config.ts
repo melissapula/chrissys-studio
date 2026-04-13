@@ -3,6 +3,9 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
     modules: ['@nuxt/eslint', '@nuxtjs/sanity'],
+    nitro: {
+        preset: 'cloudflare-worker',
+    },
     runtimeConfig: {
         stripeSecretKey: process.env.STRIPE_SECRET_KEY,
         stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
