@@ -5,7 +5,8 @@
         </header>
         <template v-if="post">
             <div v-if="post.coverImage" class="cover-image-wrapper">
-                <img :src="post.coverImage" :alt="post.title" class="cover-image" />
+                <div class="image-shield" />
+                <NuxtImg :src="post.coverImage" :alt="post.title" class="cover-image" sizes="100vw md:80vw" />
             </div>
             <article class="post-article">
                 <time class="post-date">{{ formatDate(post.publishedAt) }}</time>
@@ -34,6 +35,23 @@ const post = computed(() => {
 useHead(
     computed(() => ({
         title: post.value ? `${post.value.title} — mfp studios` : 'Post Not Found',
+        meta: post.value
+            ? [
+                  { name: 'description', content: post.value.excerpt || post.value.title },
+                  { property: 'og:type', content: 'article' },
+                  { property: 'og:title', content: post.value.title },
+                  { property: 'og:description', content: post.value.excerpt || post.value.title },
+                  ...(post.value.coverImage ? [{ property: 'og:image', content: post.value.coverImage }] : []),
+                  { property: 'og:url', content: `https://fourseasonsstudio.com/blog/${post.value.slug}` },
+                  { name: 'twitter:card', content: 'summary_large_image' },
+                  { name: 'twitter:title', content: post.value.title },
+                  { name: 'twitter:description', content: post.value.excerpt || post.value.title },
+                  ...(post.value.coverImage ? [{ name: 'twitter:image', content: post.value.coverImage }] : []),
+              ]
+            : [],
+        link: post.value
+            ? [{ rel: 'canonical', href: `https://fourseasonsstudio.com/blog/${post.value.slug}` }]
+            : [],
     }))
 )
 
@@ -74,6 +92,7 @@ function formatDate(dateStr) {
 }
 
 .cover-image-wrapper {
+    position: relative;
     width: 100%;
     max-height: 480px;
     overflow: hidden;

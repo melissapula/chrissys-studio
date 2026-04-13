@@ -22,7 +22,7 @@
                             class="cart-item"
                         >
                             <div v-if="item.image" class="cart-item-image">
-                                <img :src="item.image" :alt="item.title" />
+                                <NuxtImg :src="item.image" :alt="item.title" width="72" height="90" />
                             </div>
                             <div class="cart-item-details">
                                 <h3 class="cart-item-title">{{ item.title }}</h3>

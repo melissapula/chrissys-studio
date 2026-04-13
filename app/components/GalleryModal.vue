@@ -4,7 +4,7 @@
             <div class="modal-content" @click.stop>
                 <div v-if="item.image" class="modal-image">
                     <div class="image-shield" />
-                    <img :src="item.image" :alt="item.title" />
+                    <NuxtImg :src="item.image" :alt="item.title" sizes="100vw md:50vw" />
                 </div>
                 <div v-else class="modal-text-body">
                     <div v-if="typeof item.body === 'string'" class="body-plain">

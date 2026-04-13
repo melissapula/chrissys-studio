@@ -5,7 +5,8 @@
         </header>
         <template v-if="item">
             <div v-if="item.image" class="cover-image-wrapper">
-                <img :src="item.image" :alt="item.title" class="cover-image" />
+                <div class="image-shield" />
+                <NuxtImg :src="item.image" :alt="item.title" class="cover-image" sizes="100vw md:80vw" />
             </div>
             <article class="post-article">
                 <p v-if="item.artist" class="post-artist">{{ item.artist }}</p>
@@ -34,9 +35,35 @@ const item = computed(() => {
     return items.value.find((i) => i.slug === route.params.slug) || null
 })
 
+const itemDescription = computed(() => {
+    if (!item.value) return ''
+    const parts = [item.value.title]
+    if (item.value.medium) parts.push(item.value.medium)
+    if (item.value.dimensions) parts.push(item.value.dimensions)
+    if (item.value.artist) parts.push(`by ${item.value.artist}`)
+    return parts.join(' — ')
+})
+
 useHead(
     computed(() => ({
         title: item.value ? `${item.value.title} — mfp studios` : 'Not Found',
+        meta: item.value
+            ? [
+                  { name: 'description', content: itemDescription.value },
+                  { property: 'og:type', content: 'article' },
+                  { property: 'og:title', content: item.value.title },
+                  { property: 'og:description', content: itemDescription.value },
+                  ...(item.value.image ? [{ property: 'og:image', content: item.value.image }] : []),
+                  { property: 'og:url', content: `https://fourseasonsstudio.com/gallery/${item.value.slug}` },
+                  { name: 'twitter:card', content: 'summary_large_image' },
+                  { name: 'twitter:title', content: item.value.title },
+                  { name: 'twitter:description', content: itemDescription.value },
+                  ...(item.value.image ? [{ name: 'twitter:image', content: item.value.image }] : []),
+              ]
+            : [],
+        link: item.value
+            ? [{ rel: 'canonical', href: `https://fourseasonsstudio.com/gallery/${item.value.slug}` }]
+            : [],
     }))
 )
 </script>
@@ -69,6 +96,7 @@ useHead(
 }
 
 .cover-image-wrapper {
+    position: relative;
     width: 100%;
     max-height: 480px;
     overflow: hidden;

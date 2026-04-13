@@ -17,7 +17,7 @@
         <div class="about-container">
             <div v-if="current.image" class="about-image-wrapper">
                 <div class="image-shield" />
-                <img :src="current.image" :alt="current.name" />
+                <NuxtImg :src="current.image" :alt="current.name" loading="lazy" sizes="sm:100vw md:50vw" />
             </div>
             <div class="about-scroll-area">
                 <h3 class="about-name">{{ current.name }}</h3>

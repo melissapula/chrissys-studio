@@ -2,7 +2,12 @@
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
-    modules: ['@nuxt/eslint', '@nuxtjs/sanity', 'nitro-cloudflare-dev', '@nuxtjs/sitemap'],
+    modules: ['@nuxt/eslint', '@nuxtjs/sanity', 'nitro-cloudflare-dev', '@nuxtjs/sitemap', '@nuxt/image'],
+    image: {
+        domains: ['cdn.sanity.io'],
+        quality: 80,
+        format: ['webp'],
+    },
     site: {
         url: 'https://fourseasonsstudio.com',
     },

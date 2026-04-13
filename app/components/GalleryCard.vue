@@ -7,11 +7,13 @@
     >
         <div v-if="item.image" class="card-image-wrapper">
             <div class="image-shield" />
-            <img
+            <NuxtImg
                 :src="item.image"
                 :alt="item.title"
                 class="card-image"
                 :class="{ hovered }"
+                loading="lazy"
+                sizes="sm:100vw md:50vw lg:33vw"
             />
             <div v-if="item.sold && !hasNonOriginalOptions" class="sold-badge">Sold</div>
             <div class="card-overlay" :class="{ visible: hovered }">

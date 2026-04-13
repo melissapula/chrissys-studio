@@ -16,6 +16,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@nuxt/image": "^2.0.0",
     "@nuxtjs/sanity": "^2.1.0",
     "@nuxtjs/sitemap": "^8.0.12",
     "@sanity/client": "^7.14.1",
