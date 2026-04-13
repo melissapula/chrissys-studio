@@ -3,15 +3,17 @@ import Stripe from 'stripe'
 export default defineEventHandler(async (event) => {
     try {
         const config = useRuntimeConfig()
+        const cfEnv = event.context.cloudflare?.env
+        const stripeKey = config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
 
-        if (!config.stripeSecretKey) {
+        if (!stripeKey) {
             throw createError({
                 statusCode: 500,
                 statusMessage: 'Stripe key not configured',
             })
         }
 
-        const stripe = new Stripe(config.stripeSecretKey)
+        const stripe = new Stripe(stripeKey)
 
         const body = await readBody(event)
         const { amount } = body

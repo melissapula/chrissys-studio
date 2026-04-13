@@ -25,7 +25,8 @@ interface CartItem {
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
-    const stripe = new Stripe(config.stripeSecretKey)
+    const cfEnv = event.context.cloudflare?.env
+    const stripe = new Stripe(config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY)
 
     const rawBody = await readRawBody(event)
     const signature = getHeader(event, 'stripe-signature')
@@ -43,7 +44,7 @@ export default defineEventHandler(async (event) => {
         stripeEvent = stripe.webhooks.constructEvent(
             rawBody,
             signature,
-            config.stripeWebhookSecret
+            config.stripeWebhookSecret || cfEnv?.STRIPE_WEBHOOK_SECRET
         )
     } catch {
         throw createError({
@@ -91,9 +92,12 @@ export default defineEventHandler(async (event) => {
 
         const from = "Four Seasons Studio <hello@fourseasonsstudio.com>"
 
+        const resendApiKey = config.resendApiKey || cfEnv?.RESEND_API_KEY
+        const sellerEmail = config.sellerEmail || cfEnv?.SELLER_EMAIL
+
         if (customerEmail) {
             await sendEmail(
-                config.resendApiKey,
+                resendApiKey,
                 from,
                 customerEmail,
                 `Purchase Confirmation — mfp studios`,
@@ -107,11 +111,11 @@ export default defineEventHandler(async (event) => {
             )
         }
 
-        if (config.sellerEmail) {
+        if (sellerEmail) {
             await sendEmail(
-                config.resendApiKey,
+                resendApiKey,
                 from,
-                config.sellerEmail,
+                sellerEmail,
                 `New Sale — ${purchasedItems.map((i) => i.title).join(', ')}`,
                 `
                     <h1>You made a sale!</h1>

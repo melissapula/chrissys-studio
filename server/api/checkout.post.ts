@@ -2,7 +2,8 @@ import Stripe from 'stripe'
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
-    const stripe = new Stripe(config.stripeSecretKey)
+    const cfEnv = event.context.cloudflare?.env
+    const stripe = new Stripe(config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY)
 
     const body = await readBody(event)
     const { items } = body
