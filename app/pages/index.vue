@@ -55,6 +55,24 @@ function handleNavigate(section) {
     }
 }
 
+useHead({
+    script: [
+        {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'mfp studios',
+                url: 'https://fourseasonsstudio.com',
+                logo: 'https://fourseasonsstudio.com/og-image.png',
+                description:
+                    'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                sameAs: [],
+            }),
+        },
+    ],
+})
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
 })

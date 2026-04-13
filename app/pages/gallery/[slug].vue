@@ -64,6 +64,33 @@ useHead(
         link: item.value
             ? [{ rel: 'canonical', href: `https://fourseasonsstudio.com/gallery/${item.value.slug}` }]
             : [],
+        script: item.value && item.value.price
+            ? [
+                  {
+                      type: 'application/ld+json',
+                      innerHTML: JSON.stringify({
+                          '@context': 'https://schema.org',
+                          '@type': 'Product',
+                          name: item.value.title,
+                          description: itemDescription.value,
+                          ...(item.value.image ? { image: item.value.image } : {}),
+                          offers: {
+                              '@type': 'Offer',
+                              price: item.value.price,
+                              priceCurrency: 'USD',
+                              availability: item.value.sold
+                                  ? 'https://schema.org/SoldOut'
+                                  : 'https://schema.org/InStock',
+                              url: `https://fourseasonsstudio.com/gallery/${item.value.slug}`,
+                          },
+                          brand: {
+                              '@type': 'Organization',
+                              name: 'mfp studios',
+                          },
+                      }),
+                  },
+              ]
+            : [],
     }))
 )
 </script>
