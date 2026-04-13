@@ -2,9 +2,14 @@
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
-    modules: ['@nuxt/eslint', '@nuxtjs/sanity'],
+    modules: ['@nuxt/eslint', '@nuxtjs/sanity', 'nitro-cloudflare-dev'],
     nitro: {
-        preset: 'cloudflare-worker',
+        preset: "cloudflare_module",
+
+        cloudflare: {
+            deployConfig: true,
+            nodeCompat: true
+        }
     },
     runtimeConfig: {
         stripeSecretKey: process.env.STRIPE_SECRET_KEY,
