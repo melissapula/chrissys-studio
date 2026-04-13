@@ -4,12 +4,19 @@ export default defineEventHandler(async (event) => {
     try {
         const config = useRuntimeConfig()
         const cfEnv = event.context.cloudflare?.env
+
+        const hasConfig = !!config.stripeSecretKey
+        const hasCfEnv = !!cfEnv
+        const cfEnvKeys = cfEnv ? Object.keys(cfEnv) : []
+        const hasCfStripe = !!cfEnv?.STRIPE_SECRET_KEY
+        const contextKeys = Object.keys(event.context)
+
         const stripeKey = config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
 
         if (!stripeKey) {
             throw createError({
                 statusCode: 500,
-                statusMessage: 'Stripe key not configured',
+                statusMessage: `Stripe key not configured. runtimeConfig: ${hasConfig}, cfEnv exists: ${hasCfEnv}, cfEnv keys: [${cfEnvKeys.join(',')}], cfStripe: ${hasCfStripe}, context keys: [${contextKeys.join(',')}]`,
             })
         }
 
