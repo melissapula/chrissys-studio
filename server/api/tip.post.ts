@@ -17,26 +17,33 @@ export default defineEventHandler(async (event) => {
     const requestUrl = getRequestURL(event)
     const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
 
-    const session = await stripe.checkout.sessions.create({
-        mode: 'payment',
-        line_items: [
-            {
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: "Support Christine's Art",
+    try {
+        const session = await stripe.checkout.sessions.create({
+            mode: 'payment',
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: "Support Christine's Art",
+                        },
+                        unit_amount: Math.round(amount * 100),
                     },
-                    unit_amount: Math.round(amount * 100),
+                    quantity: 1,
                 },
-                quantity: 1,
+            ],
+            metadata: {
+                type: 'tip',
             },
-        ],
-        metadata: {
-            type: 'tip',
-        },
-        success_url: `${baseUrl}/thank-you`,
-        cancel_url: `${baseUrl}/#fuel-the-artist`,
-    })
+            success_url: `${baseUrl}/thank-you`,
+            cancel_url: `${baseUrl}/#fuel-the-artists`,
+        })
 
-    return { url: session.url }
+        return { url: session.url }
+    } catch (err: any) {
+        throw createError({
+            statusCode: 502,
+            statusMessage: err.message || 'Payment service error',
+        })
+    }
 })
