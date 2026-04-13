@@ -2,7 +2,10 @@
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
-    modules: ['@nuxt/eslint', '@nuxtjs/sanity', 'nitro-cloudflare-dev'],
+    modules: ['@nuxt/eslint', '@nuxtjs/sanity', 'nitro-cloudflare-dev', '@nuxtjs/sitemap'],
+    site: {
+        url: 'https://fourseasonsstudio.com',
+    },
     nitro: {
         preset: "cloudflare_module",
 
@@ -37,8 +40,32 @@ export default defineNuxtConfig({
                     content:
                         'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
                 },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:title', content: 'mfp studios — Original Fine Art' },
+                {
+                    property: 'og:description',
+                    content:
+                        'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                },
+                { property: 'og:url', content: 'https://fourseasonsstudio.com' },
+                { property: 'og:site_name', content: 'mfp studios' },
+                { name: 'twitter:card', content: 'summary_large_image' },
+                { name: 'twitter:title', content: 'mfp studios — Original Fine Art' },
+                {
+                    name: 'twitter:description',
+                    content:
+                        'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                },
             ],
-            link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+                { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+                { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@400;500;600;700&display=swap',
+                },
+            ],
         },
     },
 })

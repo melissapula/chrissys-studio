@@ -31,7 +31,7 @@ function mapSanityItem(doc, builder) {
         year: doc.year,
         categories: doc.categories?.filter(Boolean) || [],
         image: doc.image
-            ? builder.image(doc.image).width(800).quality(80).url()
+            ? builder.image(doc.image).width(800).quality(80).auto('format').url()
             : null,
         body: doc.body,
         purchaseOptions: doc.purchaseOptions || [],

@@ -18,7 +18,7 @@ function mapSanityPost(doc, builder) {
         publishedAt: doc.publishedAt,
         excerpt: doc.excerpt,
         coverImage: doc.coverImage
-            ? builder.image(doc.coverImage).width(800).quality(80).url()
+            ? builder.image(doc.coverImage).width(800).quality(80).auto('format').url()
             : null,
         body: doc.body,
     }
