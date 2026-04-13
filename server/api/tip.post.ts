@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: "Support Christine's Art",
+                            name: 'Support mfp studios',
                         },
                         unit_amount: Math.round(amount * 100),
                     },
