@@ -11,3 +11,12 @@ export function useSanityWriteClient() {
         useCdn: false,
     })
 }
+
+export function useSanityReadClient() {
+    return createClient({
+        projectId: '3i77cmnf',
+        dataset: 'production',
+        apiVersion: '2024-01-01',
+        useCdn: false,
+    })
+}

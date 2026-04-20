@@ -26,7 +26,9 @@ interface CartItem {
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const cfEnv = event.context.cloudflare?.env
-    const stripe = new Stripe(config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY)
+    const stripe = new Stripe(
+        config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
+    )
 
     const rawBody = await readRawBody(event)
     const signature = getHeader(event, 'stripe-signature')
@@ -81,7 +83,10 @@ export default defineEventHandler(async (event) => {
 
         const sanity = useSanityWriteClient()
         for (const item of purchasedItems) {
-            if (item.paintingId && item.optionLabel.toLowerCase() === 'original') {
+            if (
+                item.paintingId &&
+                item.optionLabel.toLowerCase() === 'original'
+            ) {
                 await sanity.patch(item.paintingId).set({ sold: true }).commit()
             }
         }
@@ -90,41 +95,54 @@ export default defineEventHandler(async (event) => {
             .map((i) => `<li>${i.title} (${i.optionLabel})</li>`)
             .join('')
 
-        const from = "Four Seasons Studio <hello@fourseasonsstudio.com>"
+        const from = 'Four Seasons Studio <hello@fourseasonsstudio.com>'
 
         const resendApiKey = config.resendApiKey || cfEnv?.RESEND_API_KEY
         const sellerEmail = config.sellerEmail || cfEnv?.SELLER_EMAIL
 
+        const emailJobs: Array<Promise<unknown>> = []
+
         if (customerEmail) {
-            await sendEmail(
-                resendApiKey,
-                from,
-                customerEmail,
-                `Purchase Confirmation — mfp studios`,
-                `
+            emailJobs.push(
+                sendEmail(
+                    resendApiKey,
+                    from,
+                    customerEmail,
+                    `Purchase Confirmation — mfp studios`,
+                    `
                     <h1>Thank you for your purchase!</h1>
                     <p>You purchased the following for ${amountPaid}:</p>
                     <ul>${itemListHtml}</ul>
                     <p>Christine will be in touch soon with shipping details.</p>
                     <p>— mfp studios</p>
                 `
+                )
             )
         }
 
         if (sellerEmail) {
-            await sendEmail(
-                resendApiKey,
-                from,
-                sellerEmail,
-                `New Sale — ${purchasedItems.map((i) => i.title).join(', ')}`,
-                `
+            emailJobs.push(
+                sendEmail(
+                    resendApiKey,
+                    from,
+                    sellerEmail,
+                    `New Sale — ${purchasedItems.map((i) => i.title).join(', ')}`,
+                    `
                     <h1>You made a sale!</h1>
                     <p>The following items were purchased for ${amountPaid}:</p>
                     <ul>${itemListHtml}</ul>
                     <p>Customer email: ${customerEmail || 'Not provided'}</p>
                 `
+                )
             )
         }
+
+        const results = await Promise.allSettled(emailJobs)
+        results.forEach((r, i) => {
+            if (r.status === 'rejected') {
+                console.error(`Post-purchase email ${i} failed:`, r.reason)
+            }
+        })
     }
 
     return { received: true }

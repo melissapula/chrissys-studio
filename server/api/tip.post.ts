@@ -16,12 +16,12 @@ export default defineEventHandler(async (event) => {
         const stripe = new Stripe(stripeKey)
 
         const body = await readBody(event)
-        const { amount } = body
+        const amount = Number(body?.amount)
 
-        if (!amount || amount < 1) {
+        if (!Number.isFinite(amount) || amount < 1 || amount > 10000) {
             throw createError({
                 statusCode: 400,
-                statusMessage: 'Amount must be at least $1',
+                statusMessage: 'Amount must be between $1 and $10,000',
             })
         }
 
