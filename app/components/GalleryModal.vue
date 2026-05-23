@@ -36,6 +36,13 @@
                         </div>
                     </div>
 
+                    <div v-if="item.image && hasBody" class="modal-description">
+                        <div v-if="typeof item.body === 'string'" class="description-plain">
+                            {{ item.body }}
+                        </div>
+                        <SanityContent v-else :value="item.body" />
+                    </div>
+
                     <template v-if="buyingOptions.length > 0">
                         <div v-if="buyingOptions.length > 1" class="option-selector">
                             <label class="option-label" for="purchase-option">Purchase Option</label>
@@ -90,6 +97,20 @@ const emit = defineEmits(['close'])
 const { addToCart, openCart } = useCart()
 const addedToCart = ref(false)
 const selectedOptionIndex = ref(0)
+
+const hasBody = computed(() => {
+    const body = props.item?.body
+    if (!body) return false
+    if (typeof body === 'string') return body.trim().length > 0
+    if (Array.isArray(body)) {
+        return body.some(
+            (b) =>
+                b._type === 'block' &&
+                b.children?.some((c) => c.text && c.text.trim().length > 0)
+        )
+    }
+    return false
+})
 
 const buyingOptions = computed(() => {
     if (!props.item) return []
@@ -242,6 +263,39 @@ function handleAddToCart() {
 
 .detail-value.artist-name {
     text-transform: capitalize;
+}
+
+.modal-description {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text-light);
+    opacity: 0.92;
+    margin: 0 0 32px;
+}
+
+.modal-description :deep(p) {
+    margin: 0 0 12px;
+}
+
+.modal-description :deep(p:last-child) {
+    margin-bottom: 0;
+}
+
+.modal-description :deep(a) {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.modal-description :deep(strong) {
+    font-weight: 500;
+}
+
+.description-plain {
+    white-space: pre-line;
 }
 
 .option-selector {

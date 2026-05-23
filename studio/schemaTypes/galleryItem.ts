@@ -121,7 +121,7 @@ export const galleryItem = defineType({
     }),
     defineField({
       name: 'body',
-      title: 'Body',
+      title: 'Description',
       type: 'array',
       of: [{type: 'block'}],
     }),

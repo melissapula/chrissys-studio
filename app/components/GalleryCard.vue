@@ -23,6 +23,9 @@
                         · {{ item.dimensions }}
                     </template>
                 </p>
+                <p v-if="bodyExcerpt" class="card-description">
+                    {{ bodyExcerpt }}
+                </p>
             </div>
         </div>
         <div v-else class="card-text-wrapper" :class="{ hovered }">
@@ -191,6 +194,17 @@ const bodyExcerpt = computed(() => {
     color: var(--color-text-light);
     letter-spacing: 1px;
     margin: 0;
+    opacity: 0.85;
+}
+
+.card-description {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    margin: 8px 0 0;
     opacity: 0.85;
 }
 
