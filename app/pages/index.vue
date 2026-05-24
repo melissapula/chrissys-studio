@@ -66,7 +66,7 @@ useHead({
                 url: 'https://fourseasonsstudio.com',
                 logo: 'https://fourseasonsstudio.com/og-image.png',
                 description:
-                    'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                    'Original paintings, poetry, songs, and digital art from four creative voices. Art, writing, and digital creations from mfp studios.',
                 sameAs: [],
             }),
         },

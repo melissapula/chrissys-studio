@@ -43,14 +43,14 @@ export default defineNuxtConfig({
                 {
                     name: 'description',
                     content:
-                        'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                        'Original paintings, poetry, songs, and digital art from four creative voices. Art, writing, and digital creations from mfp studios.',
                 },
                 { property: 'og:type', content: 'website' },
                 { property: 'og:title', content: 'mfp studios — Original Fine Art' },
                 {
                     property: 'og:description',
                     content:
-                        'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                        'Original paintings, poetry, songs, and digital art from four creative voices. Art, writing, and digital creations from mfp studios.',
                 },
                 { property: 'og:url', content: 'https://fourseasonsstudio.com' },
                 { property: 'og:site_name', content: 'mfp studios' },
@@ -60,7 +60,7 @@ export default defineNuxtConfig({
                 {
                     name: 'twitter:description',
                     content:
-                        'One-of-a-kind original paintings by Christine. Oil and acrylic works capturing light, nature, and quiet moments. Based in Minnesota.',
+                        'Original paintings, poetry, songs, and digital art from four creative voices. Art, writing, and digital creations from mfp studios.',
                 },
                 { name: 'twitter:image', content: 'https://fourseasonsstudio.com/og-image.png' },
             ],
