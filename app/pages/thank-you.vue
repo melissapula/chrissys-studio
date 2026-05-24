@@ -15,7 +15,7 @@
 
 <script setup>
 useHead({
-    title: "Thank You — mfp studios",
+    title: 'Thank You — mfp studios',
 })
 </script>
 

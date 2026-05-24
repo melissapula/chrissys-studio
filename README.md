@@ -20,9 +20,9 @@ Artist portfolio and e-commerce website for Four Seasons Studio — original fin
 - Shop section with live pricing and availability
 - Stripe Checkout for purchasing paintings
 - Webhook-driven post-purchase automation:
-  - Marks painting as sold in Sanity
-  - Sends buyer a confirmation email
-  - Sends seller a sale notification email
+    - Marks painting as sold in Sanity
+    - Sends buyer a confirmation email
+    - Sends seller a sale notification email
 - Contact form with inquiry types (general, purchase, commission)
 - Responsive design with a single breakpoint at 768px
 

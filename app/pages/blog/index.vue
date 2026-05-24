@@ -22,9 +22,13 @@
                     />
                 </div>
                 <div class="post-content">
-                    <time class="post-date">{{ formatDate(post.publishedAt) }}</time>
+                    <time class="post-date">{{
+                        formatDate(post.publishedAt)
+                    }}</time>
                     <h2 class="post-title">{{ post.title }}</h2>
-                    <p v-if="post.excerpt" class="post-excerpt">{{ post.excerpt }}</p>
+                    <p v-if="post.excerpt" class="post-excerpt">
+                        {{ post.excerpt }}
+                    </p>
                     <span class="read-more">Read More &rarr;</span>
                 </div>
             </NuxtLink>
@@ -90,7 +94,9 @@ function formatDate(dateStr) {
     border-radius: 4px;
     overflow: hidden;
     background: white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .post-card:hover {

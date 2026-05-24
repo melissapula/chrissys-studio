@@ -13,7 +13,10 @@
                     <button
                         v-for="a in artists"
                         :key="a.value"
-                        :class="['filter-btn', { active: selectedArtist === a.value }]"
+                        :class="[
+                            'filter-btn',
+                            { active: selectedArtist === a.value },
+                        ]"
                         @click="selectArtist(a.value)"
                     >
                         {{ a.label }}
@@ -23,7 +26,10 @@
                     <button
                         v-for="cat in categoryOptions"
                         :key="cat.value"
-                        :class="['filter-btn', { active: selectedCategory === cat.value }]"
+                        :class="[
+                            'filter-btn',
+                            { active: selectedCategory === cat.value },
+                        ]"
                         @click="selectedCategory = cat.value"
                     >
                         {{ cat.label }}
@@ -33,7 +39,10 @@
                     <button
                         v-for="opt in availabilityOptions"
                         :key="opt.value"
-                        :class="['filter-btn', { active: selectedAvailability === opt.value }]"
+                        :class="[
+                            'filter-btn',
+                            { active: selectedAvailability === opt.value },
+                        ]"
                         @click="selectedAvailability = opt.value"
                     >
                         {{ opt.label }}
@@ -131,7 +140,9 @@ const filteredShopItems = computed(() => {
         result = result.filter((item) => item.artist === selectedArtist.value)
     }
     if (selectedCategory.value !== 'all') {
-        result = result.filter((item) => item.categories.includes(selectedCategory.value))
+        result = result.filter((item) =>
+            item.categories.includes(selectedCategory.value)
+        )
     }
     if (selectedAvailability.value === 'original-sold') {
         result = result.filter((item) => item.sold)

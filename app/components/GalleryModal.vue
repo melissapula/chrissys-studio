@@ -4,10 +4,17 @@
             <div class="modal-content" @click.stop>
                 <div v-if="item.image" class="modal-image">
                     <div class="image-shield" />
-                    <NuxtImg :src="item.image" :alt="item.title" sizes="100vw md:50vw" />
+                    <NuxtImg
+                        :src="item.image"
+                        :alt="item.title"
+                        sizes="100vw md:50vw"
+                    />
                 </div>
                 <div v-else class="modal-text-body">
-                    <div v-if="typeof item.body === 'string'" class="body-plain">
+                    <div
+                        v-if="typeof item.body === 'string'"
+                        class="body-plain"
+                    >
                         {{ item.body }}
                     </div>
                     <SanityContent v-else-if="item.body" :value="item.body" />
@@ -24,11 +31,15 @@
                         </div>
                         <div v-if="item.dimensions" class="detail-row">
                             <span class="detail-label">Dimensions</span>
-                            <span class="detail-value">{{ item.dimensions }}</span>
+                            <span class="detail-value">{{
+                                item.dimensions
+                            }}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Artist</span>
-                            <span class="detail-value artist-name">{{ item.artist }}</span>
+                            <span class="detail-value artist-name">{{
+                                item.artist
+                            }}</span>
                         </div>
                         <div v-if="item.price" class="detail-row">
                             <span class="detail-label">Status</span>
@@ -37,15 +48,23 @@
                     </div>
 
                     <div v-if="item.image && hasBody" class="modal-description">
-                        <div v-if="typeof item.body === 'string'" class="description-plain">
+                        <div
+                            v-if="typeof item.body === 'string'"
+                            class="description-plain"
+                        >
                             {{ item.body }}
                         </div>
                         <SanityContent v-else :value="item.body" />
                     </div>
 
                     <template v-if="buyingOptions.length > 0">
-                        <div v-if="buyingOptions.length > 1" class="option-selector">
-                            <label class="option-label" for="purchase-option">Purchase Option</label>
+                        <div
+                            v-if="buyingOptions.length > 1"
+                            class="option-selector"
+                        >
+                            <label class="option-label" for="purchase-option"
+                                >Purchase Option</label
+                            >
                             <select
                                 id="purchase-option"
                                 v-model="selectedOptionIndex"
@@ -56,7 +75,9 @@
                                     :key="i"
                                     :value="i"
                                 >
-                                    {{ opt.label }} — ${{ opt.price.toLocaleString() }}
+                                    {{ opt.label }} — ${{
+                                        opt.price.toLocaleString()
+                                    }}
                                 </option>
                             </select>
                         </div>
@@ -117,7 +138,10 @@ const buyingOptions = computed(() => {
 
     if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
         return props.item.purchaseOptions
-            .filter((opt) => !(opt.label.toLowerCase() === 'original' && props.item.sold))
+            .filter(
+                (opt) =>
+                    !(opt.label.toLowerCase() === 'original' && props.item.sold)
+            )
             .map((opt) => ({
                 label: opt.label,
                 price: opt.price,
@@ -136,7 +160,10 @@ const buyingOptions = computed(() => {
     return []
 })
 
-const selectedOption = computed(() => buyingOptions.value[selectedOptionIndex.value] || buyingOptions.value[0])
+const selectedOption = computed(
+    () =>
+        buyingOptions.value[selectedOptionIndex.value] || buyingOptions.value[0]
+)
 
 watch(buyingOptions, () => {
     if (selectedOptionIndex.value >= buyingOptions.value.length) {
@@ -341,7 +368,6 @@ function handleAddToCart() {
     background: var(--color-brown-dark, #3a3028);
     color: var(--color-text-light);
 }
-
 
 .modal-price {
     font-family: var(--font-display);

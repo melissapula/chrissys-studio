@@ -2,7 +2,11 @@
     <div class="error-page">
         <p class="error-code">{{ error?.statusCode || 500 }}</p>
         <h1 class="error-title">
-            {{ error?.statusCode === 404 ? 'Page Not Found' : 'Something Went Wrong' }}
+            {{
+                error?.statusCode === 404
+                    ? 'Page Not Found'
+                    : 'Something Went Wrong'
+            }}
         </h1>
         <p class="error-message">
             {{
@@ -12,7 +16,9 @@
             }}
         </p>
         <div class="error-actions">
-            <button class="error-btn" @click="handleError">Back to Gallery</button>
+            <button class="error-btn" @click="handleError">
+                Back to Gallery
+            </button>
         </div>
     </div>
 </template>

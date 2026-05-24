@@ -17,7 +17,7 @@ const { clearCart } = useCart()
 clearCart()
 
 useHead({
-    title: "Purchase Confirmed — mfp studios",
+    title: 'Purchase Confirmed — mfp studios',
 })
 </script>
 

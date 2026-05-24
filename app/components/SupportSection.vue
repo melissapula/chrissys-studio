@@ -10,8 +10,8 @@
                 <div class="support-card">
                     <h3 class="card-title">Buy Us a Coffee</h3>
                     <p class="card-description">
-                        Love the art, but can't commit? Buy us a coffee to
-                        help keep us going, or send a donation to show your
+                        Love the art, but can't commit? Buy us a coffee to help
+                        keep us going, or send a donation to show your
                         appreciation for our work.
                     </p>
 
@@ -56,7 +56,6 @@
 
                     <p class="stripe-note">Secure checkout via Stripe</p>
                 </div>
-
             </div>
         </div>
     </section>

@@ -1,19 +1,29 @@
 <template>
     <div class="post-page">
         <header class="post-header">
-            <NuxtLink to="/#gallery" class="back-link">&larr; Back to Gallery</NuxtLink>
+            <NuxtLink to="/#gallery" class="back-link"
+                >&larr; Back to Gallery</NuxtLink
+            >
         </header>
         <template v-if="item">
             <div v-if="item.image" class="cover-image-wrapper">
                 <div class="image-shield" />
-                <NuxtImg :src="item.image" :alt="item.title" class="cover-image" sizes="100vw md:80vw" />
+                <NuxtImg
+                    :src="item.image"
+                    :alt="item.title"
+                    class="cover-image"
+                    sizes="100vw md:80vw"
+                />
             </div>
             <article class="post-article">
                 <p v-if="item.artist" class="post-artist">{{ item.artist }}</p>
                 <h1 class="post-title">{{ item.title }}</h1>
                 <div class="gold-line" />
                 <div class="post-body">
-                    <div v-if="typeof item.body === 'string'" class="body-plain">
+                    <div
+                        v-if="typeof item.body === 'string'"
+                        class="body-plain"
+                    >
                         {{ item.body }}
                     </div>
                     <SanityContent v-else-if="item.body" :value="item.body" />
@@ -22,7 +32,9 @@
         </template>
         <div v-else class="not-found">
             <p>Item not found.</p>
-            <NuxtLink to="/#gallery" class="back-link">Browse the gallery &rarr;</NuxtLink>
+            <NuxtLink to="/#gallery" class="back-link"
+                >Browse the gallery &rarr;</NuxtLink
+            >
         </div>
     </div>
 </template>
@@ -52,45 +64,66 @@ useHead(
                   { name: 'description', content: itemDescription.value },
                   { property: 'og:type', content: 'article' },
                   { property: 'og:title', content: item.value.title },
-                  { property: 'og:description', content: itemDescription.value },
-                  ...(item.value.image ? [{ property: 'og:image', content: item.value.image }] : []),
-                  { property: 'og:url', content: `https://fourseasonsstudio.com/gallery/${item.value.slug}` },
+                  {
+                      property: 'og:description',
+                      content: itemDescription.value,
+                  },
+                  ...(item.value.image
+                      ? [{ property: 'og:image', content: item.value.image }]
+                      : []),
+                  {
+                      property: 'og:url',
+                      content: `https://fourseasonsstudio.com/gallery/${item.value.slug}`,
+                  },
                   { name: 'twitter:card', content: 'summary_large_image' },
                   { name: 'twitter:title', content: item.value.title },
-                  { name: 'twitter:description', content: itemDescription.value },
-                  ...(item.value.image ? [{ name: 'twitter:image', content: item.value.image }] : []),
+                  {
+                      name: 'twitter:description',
+                      content: itemDescription.value,
+                  },
+                  ...(item.value.image
+                      ? [{ name: 'twitter:image', content: item.value.image }]
+                      : []),
               ]
             : [],
         link: item.value
-            ? [{ rel: 'canonical', href: `https://fourseasonsstudio.com/gallery/${item.value.slug}` }]
-            : [],
-        script: item.value && item.value.price
             ? [
                   {
-                      type: 'application/ld+json',
-                      innerHTML: JSON.stringify({
-                          '@context': 'https://schema.org',
-                          '@type': 'Product',
-                          name: item.value.title,
-                          description: itemDescription.value,
-                          ...(item.value.image ? { image: item.value.image } : {}),
-                          offers: {
-                              '@type': 'Offer',
-                              price: item.value.price,
-                              priceCurrency: 'USD',
-                              availability: item.value.sold
-                                  ? 'https://schema.org/SoldOut'
-                                  : 'https://schema.org/InStock',
-                              url: `https://fourseasonsstudio.com/gallery/${item.value.slug}`,
-                          },
-                          brand: {
-                              '@type': 'Organization',
-                              name: 'mfp studios',
-                          },
-                      }),
+                      rel: 'canonical',
+                      href: `https://fourseasonsstudio.com/gallery/${item.value.slug}`,
                   },
               ]
             : [],
+        script:
+            item.value && item.value.price
+                ? [
+                      {
+                          type: 'application/ld+json',
+                          innerHTML: JSON.stringify({
+                              '@context': 'https://schema.org',
+                              '@type': 'Product',
+                              name: item.value.title,
+                              description: itemDescription.value,
+                              ...(item.value.image
+                                  ? { image: item.value.image }
+                                  : {}),
+                              offers: {
+                                  '@type': 'Offer',
+                                  price: item.value.price,
+                                  priceCurrency: 'USD',
+                                  availability: item.value.sold
+                                      ? 'https://schema.org/SoldOut'
+                                      : 'https://schema.org/InStock',
+                                  url: `https://fourseasonsstudio.com/gallery/${item.value.slug}`,
+                              },
+                              brand: {
+                                  '@type': 'Organization',
+                                  name: 'mfp studios',
+                              },
+                          }),
+                      },
+                  ]
+                : [],
     }))
 )
 </script>

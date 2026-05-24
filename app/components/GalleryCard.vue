@@ -15,7 +15,9 @@
                 loading="lazy"
                 sizes="sm:100vw md:50vw lg:33vw"
             />
-            <div v-if="item.sold && !hasNonOriginalOptions" class="sold-badge">Sold</div>
+            <div v-if="item.sold && !hasNonOriginalOptions" class="sold-badge">
+                Sold
+            </div>
             <div class="card-overlay" :class="{ visible: hovered }">
                 <p v-if="item.medium" class="card-meta">
                     {{ item.medium }}
@@ -29,7 +31,9 @@
             </div>
         </div>
         <div v-else class="card-text-wrapper" :class="{ hovered }">
-            <span class="card-category-label">{{ (item.categories || [])[0] }}</span>
+            <span class="card-category-label">{{
+                (item.categories || [])[0]
+            }}</span>
             <p class="card-body-excerpt">
                 {{ bodyExcerpt }}
             </p>

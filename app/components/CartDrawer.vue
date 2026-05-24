@@ -4,7 +4,9 @@
             <div class="cart-drawer" @click.stop>
                 <div class="cart-header">
                     <h2 class="cart-title">Your Cart</h2>
-                    <button class="cart-close" @click="closeCart">&#10005;</button>
+                    <button class="cart-close" @click="closeCart">
+                        &#10005;
+                    </button>
                 </div>
 
                 <div v-if="cartItems.length === 0" class="cart-empty">
@@ -22,28 +24,52 @@
                             class="cart-item"
                         >
                             <div v-if="item.image" class="cart-item-image">
-                                <NuxtImg :src="item.image" :alt="item.title" width="72" height="90" />
+                                <NuxtImg
+                                    :src="item.image"
+                                    :alt="item.title"
+                                    width="72"
+                                    height="90"
+                                />
                             </div>
                             <div class="cart-item-details">
-                                <h3 class="cart-item-title">{{ item.title }}</h3>
-                                <p class="cart-item-option">{{ item.optionLabel }}</p>
+                                <h3 class="cart-item-title">
+                                    {{ item.title }}
+                                </h3>
+                                <p class="cart-item-option">
+                                    {{ item.optionLabel }}
+                                </p>
                                 <p class="cart-item-price">
                                     ${{ item.price.toLocaleString() }}
                                 </p>
                                 <div
-                                    v-if="item.optionLabel.toLowerCase() !== 'original'"
+                                    v-if="
+                                        item.optionLabel.toLowerCase() !==
+                                        'original'
+                                    "
                                     class="quantity-controls"
                                 >
                                     <button
                                         class="qty-btn"
-                                        @click="updateQuantity(item.cartId, item.quantity - 1)"
+                                        @click="
+                                            updateQuantity(
+                                                item.cartId,
+                                                item.quantity - 1
+                                            )
+                                        "
                                     >
                                         &minus;
                                     </button>
-                                    <span class="qty-value">{{ item.quantity }}</span>
+                                    <span class="qty-value">{{
+                                        item.quantity
+                                    }}</span>
                                     <button
                                         class="qty-btn"
-                                        @click="updateQuantity(item.cartId, item.quantity + 1)"
+                                        @click="
+                                            updateQuantity(
+                                                item.cartId,
+                                                item.quantity + 1
+                                            )
+                                        "
                                     >
                                         +
                                     </button>
@@ -88,8 +114,15 @@
 </template>
 
 <script setup>
-const { cartItems, cartOpen, cartTotal, removeFromCart, updateQuantity, closeCart, clearCart } =
-    useCart()
+const {
+    cartItems,
+    cartOpen,
+    cartTotal,
+    removeFromCart,
+    updateQuantity,
+    closeCart,
+    clearCart,
+} = useCart()
 
 const checkingOut = ref(false)
 

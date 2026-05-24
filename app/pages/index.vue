@@ -13,10 +13,7 @@
         <SocialsSection />
         <ContactSection />
         <FooterSection />
-        <GalleryModal
-            :item="selectedItem"
-            @close="selectedItem = null"
-        />
+        <GalleryModal :item="selectedItem" @close="selectedItem = null" />
         <CartDrawer />
     </div>
 </template>
@@ -49,7 +46,9 @@ function handleNavigate(section) {
         return
     }
     activeSection.value = section
-    const el = document.getElementById(section.toLowerCase().replace(/\s+/g, '-'))
+    const el = document.getElementById(
+        section.toLowerCase().replace(/\s+/g, '-')
+    )
     if (el) {
         el.scrollIntoView({ behavior: 'smooth' })
     }

@@ -8,7 +8,10 @@
                     <button
                         v-for="a in artists"
                         :key="a.value"
-                        :class="['filter-btn', { active: selectedArtist === a.value }]"
+                        :class="[
+                            'filter-btn',
+                            { active: selectedArtist === a.value },
+                        ]"
                         @click="selectArtist(a.value)"
                     >
                         {{ a.label }}
@@ -18,7 +21,10 @@
                     <button
                         v-for="cat in categoryOptions"
                         :key="cat.value"
-                        :class="['filter-btn', { active: selectedCategory === cat.value }]"
+                        :class="[
+                            'filter-btn',
+                            { active: selectedCategory === cat.value },
+                        ]"
                         @click="selectedCategory = cat.value"
                     >
                         {{ cat.label }}

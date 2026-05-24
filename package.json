@@ -1,38 +1,47 @@
 {
-  "name": "chrissys-website",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "npm run build && wrangler dev",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "deploy": "npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
-  },
-  "dependencies": {
-    "@nuxt/image": "^2.0.0",
-    "@nuxtjs/sanity": "^2.1.0",
-    "@nuxtjs/sitemap": "^8.0.12",
-    "@sanity/client": "^7.14.1",
-    "@sanity/image-url": "^2.0.3",
-    "nuxt": "^4.3.0",
-    "stripe": "^20.3.1",
-    "vue": "^3.5.27",
-    "vue-router": "^4.6.4"
-  },
-  "devDependencies": {
-    "@nuxt/eslint": "^1.14.0",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "nitro-cloudflare-dev": "^0.2.2",
-    "prettier": "^3.8.1",
-    "wrangler": "^4.82.1"
-  }
+    "name": "chrissys-website",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "npm run build && wrangler dev",
+        "postinstall": "nuxt prepare",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "deploy": "npm run build && wrangler deploy",
+        "cf-typegen": "wrangler types",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "*.{vue,ts,tsx,js,mjs,cjs,json,md,yml,yaml,css,scss}": [
+            "prettier --write"
+        ]
+    },
+    "dependencies": {
+        "@mfp-design-system/tokens": "^0.1.0",
+        "@nuxt/image": "^2.0.0",
+        "@nuxtjs/sanity": "^2.1.0",
+        "@nuxtjs/sitemap": "^8.0.12",
+        "@sanity/client": "^7.14.1",
+        "@sanity/image-url": "^2.0.3",
+        "nuxt": "^4.3.0",
+        "stripe": "^20.3.1",
+        "vue": "^3.5.27",
+        "vue-router": "^4.6.4"
+    },
+    "devDependencies": {
+        "@nuxt/eslint": "^1.14.0",
+        "eslint": "^9.39.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.0.5",
+        "nitro-cloudflare-dev": "^0.2.2",
+        "prettier": "^3.8.1",
+        "wrangler": "^4.82.1"
+    }
 }
