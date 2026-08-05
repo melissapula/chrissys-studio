@@ -71,29 +71,26 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        const isOriginal = item.optionLabel!.toLowerCase() === 'original'
-        let price: number | undefined
+        const isOriginal = isOriginalOption(item.optionLabel)
+        const option = painting.purchaseOptions?.find(
+            (o) => o.label === item.optionLabel
+        )
 
-        if (isOriginal) {
-            if (painting.sold) {
-                throw createError({
-                    statusCode: 400,
-                    statusMessage: `"${painting.title}" is no longer available`,
-                })
-            }
-            price = painting.price
-        } else {
-            const option = painting.purchaseOptions?.find(
-                (o) => o.label === item.optionLabel
-            )
-            if (!option) {
-                throw createError({
-                    statusCode: 400,
-                    statusMessage: `Invalid purchase option for "${painting.title}"`,
-                })
-            }
-            price = option.price
+        if (isOriginal && painting.sold) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: `"${painting.title}" is no longer available`,
+            })
         }
+
+        if (!option && !isOriginal) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: `Invalid purchase option for "${painting.title}"`,
+            })
+        }
+
+        const price = option ? option.price : painting.price
 
         if (!price || price <= 0) {
             throw createError({
@@ -126,10 +123,9 @@ export default defineEventHandler(async (event) => {
             price_data: {
                 currency: 'usd',
                 product_data: {
-                    name:
-                        item.optionLabel.toLowerCase() !== 'original'
-                            ? `${item.title} (${item.optionLabel})`
-                            : item.title,
+                    name: isOriginalOption(item.optionLabel)
+                        ? item.title
+                        : `${item.title} (${item.optionLabel})`,
                     images: item.image ? [item.image] : [],
                 },
                 unit_amount: Math.round(item.price * 100),

@@ -81,19 +81,33 @@ export default defineEventHandler(async (event) => {
             ]
         }
 
-        const sanity = useSanityWriteClient()
+        const sanity = useSanityWriteClient(event)
+        const unmarkedSales: string[] = []
+
         for (const item of purchasedItems) {
-            if (
-                item.paintingId &&
-                item.optionLabel.toLowerCase() === 'original'
-            ) {
-                await sanity.patch(item.paintingId).set({ sold: true }).commit()
+            if (item.paintingId && isOriginalOption(item.optionLabel)) {
+                try {
+                    await sanity
+                        .patch(item.paintingId)
+                        .set({ sold: true })
+                        .commit()
+                } catch (err) {
+                    unmarkedSales.push(item.title)
+                    console.error(
+                        `Failed to mark "${item.title}" (${item.paintingId}) as sold:`,
+                        err
+                    )
+                }
             }
         }
 
         const itemListHtml = purchasedItems
             .map((i) => `<li>${i.title} (${i.optionLabel})</li>`)
             .join('')
+
+        const unmarkedSalesHtml = unmarkedSales.length
+            ? `<p><strong>Action needed:</strong> ${unmarkedSales.join(', ')} could not be marked as sold automatically. Please update the listing in Sanity Studio.</p>`
+            : ''
 
         const from = 'Four Seasons Studio <hello@fourseasonsstudio.com>'
 
@@ -132,6 +146,7 @@ export default defineEventHandler(async (event) => {
                     <p>The following items were purchased for ${amountPaid}:</p>
                     <ul>${itemListHtml}</ul>
                     <p>Customer email: ${customerEmail || 'Not provided'}</p>
+                    ${unmarkedSalesHtml}
                 `
                 )
             )

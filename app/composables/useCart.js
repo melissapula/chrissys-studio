@@ -15,7 +15,7 @@ export function useCart() {
         const existing = cartItems.value.find((i) => i.cartId === cartId)
 
         if (existing) {
-            if (option.label.toLowerCase() === 'original') return
+            if (isOriginalOption(option.label)) return
             existing.quantity++
         } else {
             cartItems.value.push({
@@ -42,7 +42,7 @@ export function useCart() {
         }
         const item = cartItems.value.find((i) => i.cartId === cartId)
         if (item) {
-            if (item.optionLabel.toLowerCase() === 'original') return
+            if (isOriginalOption(item.optionLabel)) return
             item.quantity = newQuantity
         }
     }

@@ -42,10 +42,7 @@
                                     ${{ item.price.toLocaleString() }}
                                 </p>
                                 <div
-                                    v-if="
-                                        item.optionLabel.toLowerCase() !==
-                                        'original'
-                                    "
+                                    v-if="!isOriginalOption(item.optionLabel)"
                                     class="quantity-controls"
                                 >
                                     <button
@@ -121,7 +118,6 @@ const {
     removeFromCart,
     updateQuantity,
     closeCart,
-    clearCart,
 } = useCart()
 
 const checkingOut = ref(false)

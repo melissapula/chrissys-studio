@@ -50,12 +50,17 @@ export default defineEventHandler(async (event) => {
         })
 
         return { url: session.url }
-    } catch (err: any) {
-        if (err.statusCode) throw err
+    } catch (err) {
+        const { statusCode, message } = err as {
+            statusCode?: number
+            message?: string
+        }
+
+        if (statusCode) throw err
 
         throw createError({
             statusCode: 502,
-            statusMessage: err.message || 'Payment service error',
+            statusMessage: message || 'Payment service error',
         })
     }
 })

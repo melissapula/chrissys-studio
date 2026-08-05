@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
     error: { type: Object, default: null },
 })
 

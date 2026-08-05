@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
     active: { type: String, default: 'gallery' },
     scrolled: { type: Boolean, default: false },
 })

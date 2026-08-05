@@ -9,6 +9,7 @@ function escapeHtml(str: string): string {
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
+    const cfEnv = event.context.cloudflare?.env
     const body = await readBody(event)
     const { name, email, type, message } = body as {
         name?: string
@@ -53,12 +54,12 @@ export default defineEventHandler(async (event) => {
     await $fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${config.resendApiKey}`,
+            Authorization: `Bearer ${config.resendApiKey || cfEnv?.RESEND_API_KEY}`,
             'Content-Type': 'application/json',
         },
         body: {
             from: 'Four Seasons Studio <hello@fourseasonsstudio.com>',
-            to: config.sellerEmail,
+            to: config.sellerEmail || cfEnv?.SELLER_EMAIL,
             subject: `New ${typeLabel} from ${name.replace(/[\r\n]+/g, ' ')}`,
             html: `
                 <h1>New Contact Form Submission</h1>

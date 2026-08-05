@@ -138,10 +138,7 @@ const buyingOptions = computed(() => {
 
     if (props.item.purchaseOptions && props.item.purchaseOptions.length > 0) {
         return props.item.purchaseOptions
-            .filter(
-                (opt) =>
-                    !(opt.label.toLowerCase() === 'original' && props.item.sold)
-            )
+            .filter((opt) => !(isOriginalOption(opt.label) && props.item.sold))
             .map((opt) => ({
                 label: opt.label,
                 price: opt.price,
