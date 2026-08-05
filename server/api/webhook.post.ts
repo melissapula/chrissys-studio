@@ -26,9 +26,18 @@ interface CartItem {
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const cfEnv = event.context.cloudflare?.env
-    const stripe = new Stripe(
-        config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
-    )
+    const stripeKey = config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
+    const webhookSecret =
+        config.stripeWebhookSecret || cfEnv?.STRIPE_WEBHOOK_SECRET
+
+    if (!stripeKey || !webhookSecret) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Stripe webhook not configured',
+        })
+    }
+
+    const stripe = new Stripe(stripeKey)
 
     const rawBody = await readRawBody(event)
     const signature = getHeader(event, 'stripe-signature')
@@ -46,7 +55,7 @@ export default defineEventHandler(async (event) => {
         stripeEvent = stripe.webhooks.constructEvent(
             rawBody,
             signature,
-            config.stripeWebhookSecret || cfEnv?.STRIPE_WEBHOOK_SECRET
+            webhookSecret
         )
     } catch {
         throw createError({

@@ -27,9 +27,16 @@ interface SanityPainting {
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const cfEnv = event.context.cloudflare?.env
-    const stripe = new Stripe(
-        config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
-    )
+    const stripeKey = config.stripeSecretKey || cfEnv?.STRIPE_SECRET_KEY
+
+    if (!stripeKey) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Stripe key not configured',
+        })
+    }
+
+    const stripe = new Stripe(stripeKey)
 
     const body = await readBody(event)
     const { items } = body as { items?: IncomingItem[] }
