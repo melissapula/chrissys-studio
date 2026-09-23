@@ -14,12 +14,14 @@
                 class="post-card"
             >
                 <div class="post-image-wrapper">
-                    <img
-                        v-if="post.coverImage"
-                        :src="post.coverImage"
-                        :alt="post.title"
-                        class="post-image"
-                    />
+                    <template v-if="post.coverImage">
+                        <div class="image-shield" />
+                        <img
+                            :src="post.coverImage"
+                            :alt="post.title"
+                            class="post-image"
+                        />
+                    </template>
                 </div>
                 <div class="post-content">
                     <time class="post-date">{{
@@ -105,6 +107,7 @@ function formatDate(dateStr) {
 }
 
 .post-image-wrapper {
+    position: relative;
     aspect-ratio: 16 / 10;
     overflow: hidden;
     background: var(--color-cream-dark);

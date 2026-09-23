@@ -3,7 +3,7 @@
         <div v-if="item" class="modal-backdrop" @click="$emit('close')">
             <div class="modal-content" @click.stop>
                 <div v-if="item.image" class="modal-image">
-                    <div class="image-shield" />
+                    <div class="image-shield watermark" />
                     <NuxtImg
                         :src="item.image"
                         :alt="item.title"

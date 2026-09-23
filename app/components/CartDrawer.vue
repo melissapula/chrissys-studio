@@ -24,6 +24,7 @@
                             class="cart-item"
                         >
                             <div v-if="item.image" class="cart-item-image">
+                                <div class="image-shield" />
                                 <NuxtImg
                                     :src="item.image"
                                     :alt="item.title"
@@ -258,6 +259,7 @@ async function handleCheckout() {
 }
 
 .cart-item-image {
+    position: relative;
     width: 72px;
     height: 90px;
     flex-shrink: 0;

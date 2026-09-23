@@ -46,6 +46,11 @@ img {
     background: transparent;
 }
 
+.image-shield.watermark {
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='260'%20height='260'%3E%3Ctext%20x='10'%20y='150'%20font-family='DM%20Sans,%20sans-serif'%20font-size='22'%20fill='white'%20fill-opacity='0.35'%20transform='rotate(-28%20130%20130)'%3Emfp%20studios%3C/text%3E%3C/svg%3E");
+    background-repeat: repeat;
+}
+
 ::placeholder {
     color: var(--color-tan-lighter);
 }

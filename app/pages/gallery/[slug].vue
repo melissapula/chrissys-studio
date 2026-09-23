@@ -7,7 +7,7 @@
         </header>
         <template v-if="item">
             <div v-if="item.image" class="cover-image-wrapper">
-                <div class="image-shield" />
+                <div class="image-shield watermark" />
                 <NuxtImg
                     :src="item.image"
                     :alt="item.title"
