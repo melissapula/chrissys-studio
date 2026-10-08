@@ -239,7 +239,11 @@ function handleAddToCart() {
 .modal-details {
     flex: 0.7;
     color: var(--color-text-light);
-    padding: 20px 0;
+    padding: 20px 16px 20px 0;
+    max-height: 85vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-tan) transparent;
 }
 
 .modal-title {
@@ -450,6 +454,9 @@ function handleAddToCart() {
     .modal-details {
         flex: none;
         width: 100%;
+        padding: 20px 0;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .modal-title {
